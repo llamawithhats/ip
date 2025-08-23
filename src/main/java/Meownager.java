@@ -26,12 +26,13 @@ public class Meownager {
         if (input.equals("bye")) {
             System.out.println("\n\tMeow you next time!");
         } else if (input.equals("list")) {
-            System.out.println("\n\t\uD83D\uDC3E Here are your purr-fect tasks:");
             if (index == 0) { //no tasks
-                System.out.println("\n\t" + "1. " + null);
-            }
-            for (int i = 0; i < index; i++) {
-                System.out.println("\n\t" + (i + 1) + "." + listOfTasks[i].getMessage());
+                System.out.println("\n\tYou have NO tasks!");
+            } else {
+                System.out.println("\n\t\uD83D\uDC3E Here are your purr-fect tasks:");
+                for (int i = 0; i < index; i++) {
+                    System.out.println("\n\t" + (i + 1) + "." + listOfTasks[i].getMessage());
+                }
             }
             addList(sc, index, listOfTasks); //repeat inputs
         } else if (input.startsWith("mark ") || input.startsWith("unmark ")) {
@@ -44,11 +45,29 @@ public class Meownager {
             t.markMessage(t, num, input);
             addList(sc, index, listOfTasks);
         } else {
-            //adding tasks
-            Task t = new Task(input);
-            System.out.println("\n\tadded: " + input);
-            listOfTasks[index] = t;
-            index++; //increment array position
+            Task t = new Task(null);
+            if (input.startsWith("todo "))  {
+                t = new Todo(input);
+                listOfTasks[index] = t;
+            } else if (input.startsWith("deadline ")) {
+                String description = input.split("deadline |/by")[1].trim();
+                String date = input.split(" /by ")[1]; //get deadline
+                t = new Deadline(description, date);
+            } else if (input.startsWith("event ")) {
+                String description = input.split("event |/from")[1].trim();
+                String from = input.split("/from | /to")[1]; //get from date
+                String to = input.split("/to ")[1]; //get to date
+                t = new Event(description, from, to);
+            } else {
+                System.out.println("\n\t Meow? I don't understand you.");
+            }
+            if (t.description != null) { //if valid input
+                listOfTasks[index] = t; //add task to list
+                System.out.println("\n\tMeow-K! I've added this task:");
+                System.out.println("\n\t\t" + t.getMessage());
+                index++;//increment array position
+                System.out.println("\n\tYou neow have " + index + " tasks in your list.");
+            }
             addList(sc, index, listOfTasks);
         }
     }
