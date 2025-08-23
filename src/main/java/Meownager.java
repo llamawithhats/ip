@@ -1,4 +1,4 @@
-import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 //NOTE: IdeaProjects -> ip -> src -> main -> java
@@ -9,8 +9,8 @@ public class Meownager {
     public static void main(String[] args) {
         greetings();
         Scanner sc = new Scanner(System.in); //get inputs from user
-        Task[] listOfTasks = new Task[100]; //to track list of tasks
-        addList(sc, 0, listOfTasks);
+        ArrayList<Task> listOfTasks = new ArrayList<>(); //to track list of tasks
+        addList(sc, listOfTasks);
         sc.close();
     }
 
@@ -34,7 +34,7 @@ public class Meownager {
         }
     }
 
-    public static void addList(Scanner sc, int index, Task[] listOfTasks) {
+    public static void addList(Scanner sc, ArrayList<Task> listOfTasks) {
         String input = sc.nextLine();
 
         if (input.equals("bye")) {
@@ -44,27 +44,33 @@ public class Meownager {
 
         try {
             if (input.equals("list")) {
-                if (index == 0) { //no tasks
+                if (listOfTasks.isEmpty()) { //no tasks
                     throw MeownagerException.emptyList();
                 } else {
                     System.out.println("\n\t\uD83D\uDE3A Here are your tasks, hooman:");
-                    for (int i = 0; i < index; i++) {
-                        System.out.println("\n\t" + (i + 1) + "." + listOfTasks[i].getMessage());
+                    for (int i = 0; i < listOfTasks.size(); i++) {
+                        System.out.println("\n\t" + (i + 1) + "." + listOfTasks.get(i).getMessage());
                     }
                 }
-                addList(sc, index, listOfTasks); //repeat inputs
-            } else if (input.startsWith("mark ") || input.startsWith("unmark ")) {
-                // marking, unmarking
+                addList(sc, listOfTasks); //repeat inputs
+            } else if (input.startsWith("mark ") || input.startsWith("unmark ") || input.startsWith("delete")) {
+                // marking, unmarking, deleting
                 // finding task no.
                 int num = Integer.parseInt(input.split(" ")[1]); //split makes it a string[],
-                // parseint converts to int
+                // Integer.parseInt converts to int
                 //NOTE task 1 is index 0 in list (num-1)
-                if (num <= 0 || listOfTasks[num-1] == null) { //not a task number
+
+                if (num <= 0 || num > listOfTasks.size()) { //not a task number
                     throw MeownagerException.outOfBoundsTaskNumber(num);
                 }
-                Task t = listOfTasks[num-1];
-                t.markMessage(t, num, input);
-                addList(sc, index, listOfTasks);
+                Task t = listOfTasks.get(num - 1);
+                if (input.startsWith("mark ") || input.startsWith("unmark ")) { //mark, unmark
+                    t.markMessage(t, input);
+                } else { //delete
+                    listOfTasks.remove(t);
+                    t.deleteMessage(t, listOfTasks.size());
+                }
+                addList(sc, listOfTasks);
             } else {
                 Task t = null;
                 TaskType type = detectType(input);
@@ -106,16 +112,16 @@ public class Meownager {
                         break;
                     }
                 }
-                listOfTasks[index] = t; //add task to list
+                listOfTasks.add(t); //add task to list
                 System.out.println("\n\tMeow-K! I've added this task:");
                 System.out.println("\n\t\t" + t.getMessage());
-                index++;//increment array position
-                System.out.println("\n\tYou neow have " + index + " tasks in your list.");
-                addList(sc, index, listOfTasks);
+                int total = listOfTasks.size();
+                System.out.println("\n\tYou neow have " + total + " tasks in your list.");
+                addList(sc, listOfTasks);
             }
         } catch (MeownagerException e) {
                 System.out.println("\n\t" + e.getMessage());
-                addList(sc, index, listOfTasks);
+                addList(sc, listOfTasks);
         }
     }
 }

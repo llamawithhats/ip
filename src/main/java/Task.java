@@ -20,7 +20,7 @@ public class Task {
         return getStatus() + this.description;
     }
 
-    public void markMessage(Task t, int num, String input) {
+    public void markMessage(Task t, String input) {
         try {
             if (input.startsWith("mark ")) {
                 if (t.isDone) {
@@ -42,5 +42,11 @@ public class Task {
         } catch (MeownagerException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void deleteMessage(Task t, int totalTasks) {
+        System.out.println("\n\tPurr-fect! I’ve scratched that task off your list~ \uD83D\uDC3E");
+        System.out.println("\n\t\t" + t.getMessage());
+        System.out.println("\n\tYou now have " + totalTasks + " tasks left!");
     }
 }
