@@ -1,5 +1,4 @@
 public class Deadline extends Task{
-    TaskType type = TaskType.DEADLINE;
     protected String date;
 
     public Deadline(String description, String date) {

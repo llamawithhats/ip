@@ -1,5 +1,4 @@
 public class Event extends Task {
-    TaskType type = TaskType.EVENT;
     protected String from;
     protected String to;
 
