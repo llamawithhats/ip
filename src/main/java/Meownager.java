@@ -11,6 +11,7 @@ public class Meownager {
         Scanner sc = new Scanner(System.in); //get inputs from user
         Task[] listOfTasks = new Task[100]; //to track list of tasks
         addList(sc, 0, listOfTasks);
+        sc.close();
     }
 
     public static void greetings() {
@@ -42,7 +43,7 @@ public class Meownager {
             if (index == 0) { //no tasks
                 System.out.println("\n\tYou have NO tasks!");
             } else {
-                System.out.println("\n\t\uD83D\uDC3E Here are your purr-fect tasks:");
+                System.out.println("\n\t\uD83D\uDE3A Here are your tasks, hooman:");
                 for (int i = 0; i < index; i++) {
                     System.out.println("\n\t" + (i + 1) + "." + listOfTasks[i].getMessage());
                 }
