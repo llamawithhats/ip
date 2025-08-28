@@ -1,5 +1,8 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.FileWriter;
+import java.util.regex.*;
 
 //NOTE: IdeaProjects -> ip -> src -> main -> java
 //sout: System.out.println
@@ -34,10 +37,67 @@ public class Meownager {
         }
     }
 
+    public static void writeToFile(String filePath, String textToAdd) throws IOException {
+        FileWriter fw = new FileWriter(filePath);
+        fw.write(textToAdd);
+        fw.close();
+    }
+
+    public static String generateFileContent(ArrayList<Task> listOfTasks,
+                                              String fileContent) {
+        //keep adding content of each task to file in specific format
+        for (Task t : listOfTasks) {
+            String taskMsg = t.getMessage();
+            //regex pattern
+            //todo
+            if (taskMsg.startsWith("[T]")) {
+                Pattern pattern = Pattern.compile("\\[(.)]\\[(.)] (.+)");
+                Matcher m = pattern.matcher(taskMsg);
+                if (m.matches()) {
+                    String type = m.group(1);
+                    String status = m.group(2).equals("X") ? "1" : "0"; //1 if X else 0
+                    String desc = m.group(3);
+                    fileContent += type + " | " + status + " | " + desc + "\n";
+                }
+            //deadline
+            } else if (taskMsg.startsWith("[D]")) {
+                Pattern pattern = Pattern.compile("\\[(.)]\\[(.)] (.+) \\(by: (.+)\\)");
+                Matcher m = pattern.matcher(taskMsg);
+                if (m.matches()) {
+                    String type = m.group(1);
+                    String status = m.group(2).equals("X") ? "1" : "0";
+                    String desc = m.group(3);
+                    String date = m.group(4);
+                    fileContent += type + " | " + status + " | " + desc + " | " + date + "\n";
+                }
+            //event
+            } else {
+                Pattern pattern = Pattern.compile("\\[(.)]\\[(.)] (.+) \\(from: (.+) to: (.+)\\)");
+                Matcher m = pattern.matcher(taskMsg);
+                if (m.matches()) {
+                    String type = m.group(1);
+                    String status = m.group(2).equals("X") ? "1" : "0";
+                    String desc = m.group(3);
+                    String from = m.group(4);
+                    String to = m.group(5);
+                    fileContent += type + " | " + status + " | " + desc + " | " + from + " | " + to + "\n";
+                }
+            }
+        }
+        return fileContent;
+    }
+
     public static void addList(Scanner sc, ArrayList<Task> listOfTasks) {
         String input = sc.nextLine();
 
         if (input.equals("bye")) {
+            String filePath = "./data/Meownager.txt";
+            String fileText = generateFileContent(listOfTasks, "");
+            try {
+                writeToFile(filePath, fileText);
+            } catch (IOException e) { // file doesnt exist (wont happen)
+                System.out.println("Something went wrong: " + e.getMessage());
+            }
             System.out.println("\n\tMeow you next time!");
             return;
         }
@@ -64,11 +124,11 @@ public class Meownager {
                     throw MeownagerException.outOfBoundsTaskNumber(num);
                 }
                 Task t = listOfTasks.get(num - 1);
-                if (input.startsWith("mark ") || input.startsWith("unmark ")) { //mark, unmark
-                    t.markMessage(t, input);
-                } else { //delete
+                if (input.startsWith("delete")) { //delete
                     listOfTasks.remove(t);
                     t.deleteMessage(t, listOfTasks.size());
+                } else { //mark, unmark
+                    t.markMessage(t, input);
                 }
                 addList(sc, listOfTasks);
             } else {
@@ -121,5 +181,7 @@ public class Meownager {
                 addList(sc, listOfTasks);
         }
     }
+
+
 }
 
