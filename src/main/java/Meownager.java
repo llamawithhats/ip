@@ -3,7 +3,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.FileWriter;
-import java.util.regex.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 //NOTE: IdeaProjects -> ip -> src -> main -> java
 //sout: System.out.println
@@ -28,7 +29,7 @@ public class Meownager {
                 f.createNewFile();
                 System.out.println("📁 New file created at: " + filePath);
             }
-            transferFileContents(listOfTasks);
+            loadFile(listOfTasks);
         } catch (IOException e) {
             System.out.println("MEOW!! Couldn't create or read the file: " + e.getMessage());
         }
@@ -63,8 +64,9 @@ public class Meownager {
         fw.close();
     }
 
-    public static String generateFileContent(ArrayList<Task> listOfTasks,
-                                              String fileContent) {
+    // store list
+    public static String storeFile(ArrayList<Task> listOfTasks,
+                                   String fileContent) {
         //keep adding content of each task to file in specific format
         for (Task t : listOfTasks) {
             String taskMsg = t.getMessage();
@@ -108,7 +110,7 @@ public class Meownager {
         return fileContent;
     }
 
-    public static void transferFileContents(ArrayList<Task> listOfTasks) throws IOException {
+    public static void loadFile(ArrayList<Task> listOfTasks) throws IOException {
         File f = new File("./data/Meownager.txt");
         Scanner s = new Scanner(f);
         //add previous tasks into new arraylist
@@ -148,7 +150,7 @@ public class Meownager {
 
         if (input.equals("bye")) {
             String filePath = "./data/Meownager.txt";
-            String fileText = generateFileContent(listOfTasks, "");
+            String fileText = storeFile(listOfTasks, "");
             try {
                 writeToFile(filePath, fileText);
             } catch (IOException e) { // file doesnt exist (wont happen)
@@ -209,7 +211,7 @@ public class Meownager {
                         throw MeownagerException.missingDeadlineInfo();
                     }
                     String descriptionDead = input.split("deadline |/by")[1].trim();
-                    String date = input.split(" /by ")[1]; //get deadline
+                    String date = input.split("/by")[1].trim(); //get deadline
                     t = new Deadline(descriptionDead, date);
                     break;
                 case EVENT:
