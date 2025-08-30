@@ -1,3 +1,5 @@
+package meownager.ui;
+
 public class Parser {
     static TaskType detectType(String input) {
         if (input.startsWith("todo")) {

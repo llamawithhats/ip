@@ -1,3 +1,5 @@
+package meownager.ui;
+
 public class MeownagerException extends Exception {
     public MeownagerException (String message) {
         super(message);
@@ -25,7 +27,7 @@ public class MeownagerException extends Exception {
     }
 
     public static MeownagerException outOfBoundsTaskNumber(int taskNum) {
-        return new MeownagerException("Mrowr! Task number " + taskNum + " doesn’t exist!");
+        return new MeownagerException("Mrowr! meownager.ui.Task number " + taskNum + " doesn’t exist!");
     }
 
     public static MeownagerException alreadyCompleted() {

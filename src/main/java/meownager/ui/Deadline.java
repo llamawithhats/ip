@@ -1,3 +1,5 @@
+package meownager.ui;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -5,7 +7,7 @@ import java.time.format.DateTimeParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Deadline extends Task{
+public class Deadline extends Task {
     protected String date;
 
     public Deadline(String description, String date) {
