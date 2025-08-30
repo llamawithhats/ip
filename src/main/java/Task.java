@@ -1,6 +1,7 @@
 public class Task {
     protected String description;
     protected boolean isDone;
+    private Ui ui = new Ui();
 
     public Task(String description) {
         this.description = description;
@@ -28,17 +29,15 @@ public class Task {
                 if (t.isDone) {
                     throw MeownagerException.alreadyCompleted();
                 } else {
-                    System.out.println("\n\tMeow! Good job completing this task:");
                     t.mark();
-                    System.out.println("\n\t\t" + t.getMessage());
+                    ui.showMarkedMessage(t);
                 }
             } else { //unmark
                 if (!t.isDone) {
                     throw MeownagerException.stillUncompleted();
                 } else {
-                    System.out.println("\n\tMeow! I've unmarked this task for you:");
                     t.unmark();
-                    System.out.println("\n\t\t" + t.getMessage());
+                    ui.showUnmarkedMessage(t);
                 }
             }
         } catch (MeownagerException e) {
@@ -47,8 +46,10 @@ public class Task {
     }
 
     public void deleteMessage(Task t, int totalTasks) {
-        System.out.println("\n\tPurr-fect! I’ve scratched that task off your list~ \uD83D\uDC3E");
-        System.out.println("\n\t\t" + t.getMessage());
-        System.out.println("\n\tYou now have " + totalTasks + " tasks left!");
+        ui.showDeletedMessage(t, totalTasks);
     }
+
+    public String toFileString() {
+        return null;
+    };
 }

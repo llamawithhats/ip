@@ -45,6 +45,21 @@ public class Deadline extends Task{
     }
 
     @Override
+    public String toFileString() {
+        String fileContent = "";
+        Pattern pattern = Pattern.compile("\\[(.)]\\[(.)] (.+) \\(by: (.+)\\)");
+        Matcher m = pattern.matcher(this.getMessage());
+        if (m.matches()) {
+            String type = m.group(1);
+            String status = m.group(2).equals("X") ? "1" : "0";
+            String desc = m.group(3);
+            String date = m.group(4);
+            fileContent += type + " | " + status + " | " + desc + " | " + date + "\n";
+        }
+        return fileContent;
+    }
+
+    @Override
     public String getMessage() {
         return "[D]" + super.getMessage() + " (by: " + date + ")";
     }
