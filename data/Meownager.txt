@@ -1,3 +1,6 @@
-T | 0 | read book
-D | 1 | return book | Sunday
-E | 0 | project meeting | Mon 2pm | 4pm
+D | 1 | return book | Feb 12 2025
+
+T | 1 | read book
+
+E | 0 | proj meeting | 4 | 2
+
