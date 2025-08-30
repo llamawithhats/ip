@@ -118,20 +118,26 @@ public class Meownager {
             if (taskMsg.startsWith("T")) {
                 String desc = parts[2];
                 Task t = new Todo(desc);
-                if (parts[1].equals("1")) { t.mark(); } //mark task as done if it was (default undone)
+                if (parts[1].equals("1")) {
+                    t.mark();
+                } //mark task as done if it was (default undone)
                 listOfTasks.add(t);
             } else if (taskMsg.startsWith("D")) {
                 String desc = parts[2];
                 String date = parts[3];
                 Task t = new Deadline(desc, date);
-                if (parts[1].equals("1")) { t.mark(); } //mark task as done if it was (default undone)
+                if (parts[1].equals("1")) {
+                    t.mark();
+                } //mark task as done if it was (default undone)
                 listOfTasks.add(t);
             } else {
                 String desc = parts[2];
                 String from = parts[3];
                 String to = parts[4];
                 Task t = new Event(desc, from, to);
-                if (parts[1].equals("1")) { t.mark(); } //mark task as done if it was (default undone)
+                if (parts[1].equals("1")) {
+                    t.mark();
+                } //mark task as done if it was (default undone)
                 listOfTasks.add(t);
             }
         }

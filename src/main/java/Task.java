@@ -10,7 +10,9 @@ public class Task {
     public void mark() {
         this.isDone = true;
     }
-    public void unmark() { this.isDone = false;}
+    public void unmark() {
+        this.isDone = false;
+    }
 
     public String getStatus() {
         return (isDone ? "[X] " : "[ ] ");
