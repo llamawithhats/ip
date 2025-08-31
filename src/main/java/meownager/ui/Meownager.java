@@ -15,6 +15,7 @@ public class Meownager {
     public Meownager(String filePath) {
         storage = new Storage(filePath);
         ui = new Ui();
+        
         try {
             storage.ensureFileExists();
             tasks = new TaskList(storage.loadFile());
