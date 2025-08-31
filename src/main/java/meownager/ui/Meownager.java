@@ -1,6 +1,7 @@
 package meownager.ui;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 //NOTE: IdeaProjects -> ip -> src -> main -> java
@@ -53,6 +54,8 @@ public class Meownager {
                 handleList();
             } else if (input.startsWith("mark ") || input.startsWith("unmark ") || input.startsWith("delete")) {
                 handleModifyList(input);
+            } else if (input.startsWith("find")) {
+                handleFind(input);
             } else {
                 handleAddList(input);
             }
@@ -124,6 +127,12 @@ public class Meownager {
         }
         tasks.add(t); //add task to list
         ui.showTaskAdded(t, tasks.size());
+    }
+
+    private void handleFind(String input) {
+        String filter = input.split("find ")[1].trim();
+        ArrayList<Task> filteredTasks = tasks.getFoundTasks(filter);
+        ui.showFilteredTasks(filteredTasks);
     }
 
     public static void main(String[] args) {

@@ -47,5 +47,11 @@ public class Ui {
         System.out.println("\n\tYou neow have " + total + " tasks in your list.");
     }
 
+    public void showFilteredTasks(ArrayList<Task> listOfTasks) {
+        System.out.println("\n\tPaws up! I’ve sniffed out these matching tasks:");
+        for (int i = 0; i < listOfTasks.size(); i++) {
+            System.out.println("\n\t" + (i + 1) + "." + listOfTasks.get(i).getMessage());
+        }
+    }
 
 }

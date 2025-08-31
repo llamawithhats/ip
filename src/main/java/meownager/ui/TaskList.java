@@ -37,4 +37,13 @@ public class TaskList {
         return listOfTasks.isEmpty();
     }
 
+    public ArrayList<Task> getFoundTasks(String filter) {
+        ArrayList<Task> filteredTasks = new ArrayList<>();
+        for (Task t : this.getListOfTasks()) {
+            if (t.getMessage().contains(filter)) {
+                filteredTasks.add(t);
+            }
+        }
+        return filteredTasks;
+    }
 }
