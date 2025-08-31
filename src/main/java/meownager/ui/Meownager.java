@@ -6,12 +6,26 @@ import java.util.Scanner;
 //NOTE: IdeaProjects -> ip -> src -> main -> java
 //sout: System.out.println
 
+/**
+ * Represents a task organiser system to help keep track of tasks.
+ *
+ * @author Yu Tingan
+ */
 public class Meownager {
 
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
 
+    /**
+     * Constructs a new Meownager object with the given file path
+     * where previous history may be stored.
+     *
+     * Initialises storage to contain file path and ui.
+     * Assigns tasks to be the list of previous execution if available.
+     *
+     * @param filePath Path for file with stored content.
+     */
     public Meownager(String filePath) {
         storage = new Storage(filePath);
         ui = new Ui();
@@ -24,6 +38,10 @@ public class Meownager {
         }
     }
 
+    /**
+     * Runs the program.
+     * Includes greetings and scanner to parse input from user.
+     */
     public void run() {
         ui.showGreetings();
         Scanner sc = new Scanner(System.in); //get inputs from user
@@ -38,6 +56,9 @@ public class Meownager {
         sc.close();
     }
 
+    /**
+     * Exits the program and stores tasks into system file.
+     */
     private void exit() {
         try {
             storage.store(tasks.getListOfTasks());
@@ -47,6 +68,11 @@ public class Meownager {
         ui.showFarewell();
     }
 
+    /**
+     * Handles commands by the user ('list', 'mark', 'unmark', 'delete' and addList commands).
+     *
+     * @param input Input from the user.
+     */
     private void handleCommand(String input) {
         try {
             if (input.equals("list")) {
@@ -61,6 +87,11 @@ public class Meownager {
         }
     }
 
+    /**
+     * Handles 'list' command.
+     *
+     * @throws MeownagerException If list is empty (no tasks).
+     */
     private void handleList() throws MeownagerException {
         if (tasks.isEmpty()) { //no tasks
             throw MeownagerException.emptyList();
@@ -69,6 +100,12 @@ public class Meownager {
         }
     }
 
+    /**
+     * Handles 'mark', 'unmark' and 'delete' commands.
+     *
+     * @param input Input from user.
+     * @throws MeownagerException If inputted task number is invalid.
+     */
     private void handleModifyList(String input) throws MeownagerException {
         // finding task no. of input
         int num = Integer.parseInt(input.split(" ")[1]);
@@ -84,6 +121,12 @@ public class Meownager {
         }
     }
 
+    /**
+     * Handles commands that adds to task list.
+     *
+     * @param input Input from user.
+     * @throws MeownagerException If invalid input.
+     */
     private void handleAddList(String input) throws MeownagerException {
         Task t = null;
         TaskType type = Parser.detectType(input);

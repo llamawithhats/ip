@@ -3,6 +3,14 @@ package meownager.ui;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Represents an event task with a due date.
+ *
+ * Extends parent Task class and adds support for storing and displaying
+ * a specific to and from date (e.g. "project meeting (from: Monday 2pm to 4pm)")
+ *
+ * @author Yu Tingan
+ */
 public class Event extends Task {
     protected String from;
     protected String to;

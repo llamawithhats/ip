@@ -6,6 +6,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Loads tasks from the file and saves tasks to the file.
+ * Ensures previous task list history is kept when Meownager restarts.
+ *
+ * @author Yu Tingan
+ */
 public class Storage {
     private final String filePath;
 
@@ -13,6 +19,12 @@ public class Storage {
         this.filePath = filePath;
     }
 
+    /**
+     * Ensures that the file and its folder exists before
+     * an attempt is made to load it.
+     *
+     * @throws IOException If file can not be created.
+     */
     public void ensureFileExists() throws IOException {
         File f = new File(this.filePath);
         if (!f.exists()) {
@@ -27,6 +39,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Returns the task list from the stored file.
+     *
+     * @return Task list from previous execution.
+     * @throws IOException If file can not be created or read.
+     */
     public ArrayList<Task> loadFile() throws IOException {
         ArrayList<Task> listOfTasks = new ArrayList<>();
         File f = new File(this.filePath);
@@ -59,9 +77,12 @@ public class Storage {
         return listOfTasks;
     }
 
-
-    // -----------------------------------------------
-    //storage
+    /**
+     * Stores the current task list into the dedicated folder.
+     *
+     * @param listOfTasks Task list from execution.
+     * @throws IOException If file does not exist.
+     */
     public void store(ArrayList<Task> listOfTasks) throws IOException{
         //keep adding content of each task to file in specific format
         StringBuilder sb = new StringBuilder();

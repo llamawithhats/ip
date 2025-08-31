@@ -1,5 +1,10 @@
 package meownager.ui;
 
+/**
+ * Stores the exceptions thrown commands when Meownager is run.
+ *
+ * @author Yu Tingan
+ */
 public class MeownagerException extends Exception {
     public MeownagerException (String message) {
         super(message);
