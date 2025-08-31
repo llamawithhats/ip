@@ -3,6 +3,13 @@ package meownager.ui;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Represents a todo task.
+ *
+ * Extends parent Task class directly with no added support.
+ *
+ * @author Yu Tingan
+ */
 public class Todo extends Task {
     public Todo(String description) {
         super(description);

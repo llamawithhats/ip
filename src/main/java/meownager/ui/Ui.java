@@ -2,6 +2,11 @@ package meownager.ui;
 
 import java.util.ArrayList;
 
+/**
+ * Represents Meownager interactions with the user.
+ *
+ * @author Yu Tingan
+ */
 public class Ui {
 
     public void showGreetings() {

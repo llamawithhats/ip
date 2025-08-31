@@ -1,5 +1,10 @@
 package meownager.ui;
 
+/**
+ * Deals with making sense of the user command
+ *
+ * @author Yu Tingan
+ */
 public class Parser {
     static TaskType detectType(String input) {
         if (input.startsWith("todo")) {

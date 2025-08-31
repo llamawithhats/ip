@@ -7,6 +7,14 @@ import java.time.format.DateTimeParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Represents a deadline task with a due date.
+ *
+ * Extends parent Task class and adds support for storing and displaying
+ * a specific deadline (e.g. "return book (by: Monday 2pm)")
+ *
+ * @author Yu Tingan
+ */
 public class Deadline extends Task {
     protected String date;
 
@@ -24,6 +32,14 @@ public class Deadline extends Task {
         }
     }
 
+    /**
+     * Returns formatted date when user inputs date in a specific
+     * format (i.e. d/M/yyyy HHmm or d/M/yyyy).
+     * e.g. 12/6/2025 0600 will become Jun 12 2025, 06:00pm
+     *
+     * @param date Date from input.
+     * @return Formatted date.
+     */
     public String parseAndFormatDate(String date) {
         //with time
         try {

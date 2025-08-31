@@ -1,5 +1,10 @@
 package meownager.ui;
 
+/**
+ * Represents a task with description and completion status.
+ *
+ * @author Yu Tingan
+ */
 public class Task {
     protected String description;
     protected boolean isDone;
@@ -21,10 +26,14 @@ public class Task {
         return (isDone ? "[X] " : "[ ] ");
     }
 
-    public String getMessage() {
-        return getStatus() + this.description;
-    }
-
+    /**
+     * Marks or unmarks the task according to input.
+     * If attempt to mark the task when already marked or
+     * unmark the task when not yet marked, a MeownagerException is thrown.
+     *
+     * @param t Task.
+     * @param input Input from user.
+     */
     public void markMessage(Task t, String input) {
         try {
             if (input.startsWith("mark ")) {
@@ -47,11 +56,33 @@ public class Task {
         }
     }
 
+    /**
+     * Show deleted message when task is deleted.
+     *
+     * @param t Task.
+     * @param totalTasks Total number of tasks.
+     */
     public void deleteMessage(Task t, int totalTasks) {
         ui.showDeletedMessage(t, totalTasks);
     }
 
+    /**
+     * Returns the content of the task in the specific format required
+     * to be stored in the file (i.e. x | x | x ...).
+     *
+     * @return Task Content
+     */
     public String toFileString() {
         return null;
     };
+
+    /**
+     * Returns the message of the task to be displayed.
+     * E.g. [X] read book
+     *
+     * @return Task Message.
+     */
+    public String getMessage() {
+        return getStatus() + this.description;
+    }
 }

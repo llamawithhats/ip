@@ -2,13 +2,27 @@ package meownager.ui;
 
 import java.util.ArrayList;
 
+/**
+ * Contains the task list.
+ * Replicates ArrayList commands.
+ *
+ * @author Yu Tingan
+ */
 public class TaskList {
     private ArrayList<Task> listOfTasks;
 
+    /**
+     * Constructs a new TaskList with the given list of tasks.
+     *
+     * @param listOfTasks List of tasks.
+     */
     public TaskList(ArrayList<Task> listOfTasks) {
         this.listOfTasks = listOfTasks;
     }
 
+    /**
+     * Constructs a new empty TaskList.
+     */
     public TaskList() {
         this.listOfTasks = new ArrayList<>();
     }
