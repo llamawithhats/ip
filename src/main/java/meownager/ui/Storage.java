@@ -28,12 +28,12 @@ public class Storage {
     public void ensureFileExists() throws IOException {
         File f = new File(this.filePath);
         if (!f.exists()) {
-            //Create directory if no exist
+            // create directory if no exist
             File parent = f.getParentFile();
             if (parent != null && !parent.exists()) {
                 parent.mkdir();
             }
-            //create file if no exist
+            // create file if no exist
             f.createNewFile();
             System.out.println("📁 New file created at: " + filePath);
         }
@@ -49,7 +49,7 @@ public class Storage {
         ArrayList<Task> listOfTasks = new ArrayList<>();
         File f = new File(this.filePath);
         Scanner s = new Scanner(f);
-        //add previous tasks into new arraylist
+        // add previous tasks into new arraylist
         while (s.hasNext()) {
             String line = s.nextLine().trim();
             if (line.isEmpty()) continue; // skip blank lines
@@ -71,7 +71,7 @@ public class Storage {
             }
             if (parts[1].equals("1")) {
                 t.mark();
-            } //mark task as done if it was (default undone)
+            } // mark task as done if it was (default undone)
             listOfTasks.add(t);
         }
         return listOfTasks;
@@ -83,8 +83,8 @@ public class Storage {
      * @param listOfTasks Task list from execution.
      * @throws IOException If file does not exist.
      */
-    public void store(ArrayList<Task> listOfTasks) throws IOException{
-        //keep adding content of each task to file in specific format
+    public void store(ArrayList<Task> listOfTasks) throws IOException {
+        // keep adding content of each task to file in specific format
         StringBuilder sb = new StringBuilder();
         for (Task t : listOfTasks) {
             sb.append(t.toFileString()).append("\n");

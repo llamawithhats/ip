@@ -22,7 +22,7 @@ public class Todo extends Task {
         Matcher m = pattern.matcher(this.getMessage());
         if (m.matches()) {
             String type = m.group(1);
-            String status = m.group(2).equals("X") ? "1" : "0"; //1 if X else 0
+            String status = m.group(2).equals("X") ? "1" : "0"; // 1 if X else 0
             String desc = m.group(3);
             fileContent = type + " | " + status + " | " + desc + "\n";
         }

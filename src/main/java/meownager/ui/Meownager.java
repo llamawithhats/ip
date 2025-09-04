@@ -1,11 +1,7 @@
 package meownager.ui;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
-
-//NOTE: IdeaProjects -> ip -> src -> main -> java
-//sout: System.out.println
 
 /**
  * Represents a task organiser system to help keep track of tasks.
@@ -39,7 +35,7 @@ public class Meownager {
             tasks = new TaskList(storage.loadFile());
         } catch (IOException e) {
             ui.showError("MEOW!! Couldn't create or read the file: " + e.getMessage());
-            tasks = new TaskList(); //empty list instead
+            tasks = new TaskList(); // empty list instead
         }
     }
 
@@ -49,7 +45,7 @@ public class Meownager {
      */
     public void run() {
         ui.showGreetings();
-        Scanner sc = new Scanner(System.in); //get inputs from user
+        Scanner sc = new Scanner(System.in); // get inputs from user
         while (true) {
             String input = sc.nextLine();
             if (input.equals("bye")) {

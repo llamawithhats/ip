@@ -22,11 +22,6 @@ public class MeownagerException extends Exception {
         return new MeownagerException("HISSS!! Deadlines need a /by date, nya~");
     }
 
-    public static MeownagerException wrongDateFormat() {
-        return new MeownagerException("PURRlease format your deadline in [d/M/yyyy HHmm] format " +
-                "or [d/M/yyyy] format if no time!");
-    }
-
     public static MeownagerException missingEventInfo() {
         return new MeownagerException("PURRlease specify /from and /to for events, nya!");
     }

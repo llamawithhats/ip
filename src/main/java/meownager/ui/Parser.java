@@ -50,7 +50,7 @@ public class Parser {
      * @throws MeownagerException If list is empty (no tasks).
      */
     private void handleList(TaskList tasks) throws MeownagerException {
-        if (tasks.isEmpty()) { //no tasks
+        if (tasks.isEmpty()) { // no tasks
             throw MeownagerException.emptyList();
         } else {
             ui.showTaskList(tasks.getListOfTasks());
@@ -66,14 +66,14 @@ public class Parser {
     private void handleModifyList(String input, TaskList tasks) throws MeownagerException {
         // finding task no. of input
         int num = Integer.parseInt(input.split(" ")[1]);
-        if (num <= 0 || num > tasks.size()) { //not a task number
+        if (num <= 0 || num > tasks.size()) { // not a task number
             throw MeownagerException.outOfBoundsTaskNumber(num);
         }
         Task t = tasks.get(num - 1);
         if (input.startsWith("delete")) {
             tasks.remove(t);
             t.deleteMessage(t, tasks.size());
-        } else { //mark, unmark
+        } else { // mark, unmark
             t.markMessage(t, input);
         }
     }
@@ -87,7 +87,7 @@ public class Parser {
     private void handleAddList(String input, TaskList tasks) throws MeownagerException {
         Task t = null;
         TaskType type = Parser.detectType(input);
-        if (type == null) { //invalid input
+        if (type == null) { // invalid input
             throw MeownagerException.unknownCommand();
         }
         switch (type) {
@@ -106,7 +106,7 @@ public class Parser {
                 throw MeownagerException.missingDeadlineInfo();
             }
             String descriptionDead = input.split("deadline |/by")[1].trim();
-            String date = input.split("/by")[1].trim(); //get deadline
+            String date = input.split("/by")[1].trim(); // get deadline
             t = new Deadline(descriptionDead, date);
             break;
         case EVENT:
@@ -117,12 +117,12 @@ public class Parser {
                 throw MeownagerException.missingEventInfo();
             }
             String descriptionEve = input.split("event |/from")[1].trim();
-            String from = input.split("/from | /to")[1]; //get from date
-            String to = input.split("/to ")[1]; //get to date
+            String from = input.split("/from | /to")[1]; // get from date
+            String to = input.split("/to ")[1]; // get to date
             t = new Event(descriptionEve, from, to);
             break;
         }
-        tasks.add(t); //add task to list
+        tasks.add(t); // add task to list
         ui.showTaskAdded(t, tasks.size());
     }
 

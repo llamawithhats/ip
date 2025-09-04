@@ -12,7 +12,7 @@ public class Task {
 
     public Task(String description) {
         this.description = description;
-        this.isDone = false; //start with false
+        this.isDone = false; // start with false
     }
 
     public void mark() {
@@ -43,7 +43,7 @@ public class Task {
                     t.mark();
                     ui.showMarkedMessage(t);
                 }
-            } else { //unmark
+            } else { // unmark
                 if (!t.isDone) {
                     throw MeownagerException.stillUncompleted();
                 } else {
