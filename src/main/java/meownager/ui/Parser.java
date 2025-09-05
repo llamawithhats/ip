@@ -1,5 +1,6 @@
 package meownager.ui;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -28,20 +29,34 @@ public class Parser {
      *
      * @param input Input from the user.
      */
-    public void handleCommand(String input, TaskList tasks) {
+    public String handleCommand(String input, TaskList tasks, Storage storage) {
         try {
-            if (input.equals("list")) {
-                handleList(tasks);
+            if (input.equals("bye")) {
+                return exit(tasks, storage);
+            } else if (input.equals("list")) {
+                return handleList(tasks);
             } else if (input.startsWith("mark ") || input.startsWith("unmark ") || input.startsWith("delete")) {
-                handleModifyList(input, tasks);
+                return handleModifyList(input, tasks);
             } else if (input.startsWith("find")) {
-                handleFind(input, tasks);
+                return handleFind(input, tasks);
             } else {
-                handleAddList(input, tasks);
+                return handleAddList(input, tasks);
             }
         } catch (MeownagerException e) {
-            ui.showError(e.getMessage());
+            return ui.showError(e.getMessage());
         }
+    }
+
+    /**
+     * Exits the program and stores tasks into system file.
+     */
+    private String exit(TaskList tasks, Storage storage) {
+        try {
+            storage.store(tasks.getListOfTasks());
+        } catch (IOException e) { // file doesnt exist (wont happen)
+            return ui.showError("Something went wrong: " + e.getMessage());
+        }
+        return ui.showFarewell();
     }
 
     /**
@@ -49,11 +64,11 @@ public class Parser {
      *
      * @throws MeownagerException If list is empty (no tasks).
      */
-    private void handleList(TaskList tasks) throws MeownagerException {
+    private String handleList(TaskList tasks) throws MeownagerException {
         if (tasks.isEmpty()) { // no tasks
             throw MeownagerException.emptyList();
         } else {
-            ui.showTaskList(tasks.getListOfTasks());
+            return ui.showTaskList(tasks.getListOfTasks());
         }
     }
 
@@ -63,7 +78,7 @@ public class Parser {
      * @param input Input from user.
      * @throws MeownagerException If inputted task number is invalid.
      */
-    private void handleModifyList(String input, TaskList tasks) throws MeownagerException {
+    private String handleModifyList(String input, TaskList tasks) throws MeownagerException {
         // finding task no. of input
         int num = Integer.parseInt(input.split(" ")[1]);
         if (num <= 0 || num > tasks.size()) { // not a task number
@@ -72,9 +87,9 @@ public class Parser {
         Task t = tasks.get(num - 1);
         if (input.startsWith("delete")) {
             tasks.remove(t);
-            t.deleteMessage(t, tasks.size());
+            return t.deleteMessage(t, tasks.size());
         } else { // mark, unmark
-            t.markMessage(t, input);
+            return t.markMessage(t, input);
         }
     }
 
@@ -84,7 +99,7 @@ public class Parser {
      * @param input Input from user.
      * @throws MeownagerException If invalid input.
      */
-    private void handleAddList(String input, TaskList tasks) throws MeownagerException {
+    private String handleAddList(String input, TaskList tasks) throws MeownagerException {
         Task t = null;
         TaskType type = Parser.detectType(input);
         if (type == null) { // invalid input
@@ -123,12 +138,12 @@ public class Parser {
             break;
         }
         tasks.add(t); // add task to list
-        ui.showTaskAdded(t, tasks.size());
+        return ui.showTaskAdded(t, tasks.size());
     }
 
-    private void handleFind(String input, TaskList tasks) {
+    private String handleFind(String input, TaskList tasks) {
         String filter = input.split("find ")[1].trim();
         ArrayList<Task> filteredTasks = tasks.getFoundTasks(filter);
-        ui.showFilteredTasks(filteredTasks);
+        return ui.showFilteredTasks(filteredTasks);
     }
 }

@@ -11,11 +11,11 @@ public class MeownagerException extends Exception {
     }
 
     public static MeownagerException emptyDescription(String taskType) {
-        return new MeownagerException("MEOW!!! You didn’t tell me what the " + taskType + " is about!");
+        return new MeownagerException("MEOW!!! You didn't tell me what the " + taskType + " is about!");
     }
 
     public static MeownagerException unknownCommand() {
-        return new MeownagerException("MEOW??? I don’t understand that command. Try again, hooman~");
+        return new MeownagerException("MEOW??? I don't understand that command. Try again, hooman~");
     }
 
     public static MeownagerException missingDeadlineInfo() {
@@ -27,7 +27,7 @@ public class MeownagerException extends Exception {
     }
 
     public static MeownagerException outOfBoundsTaskNumber(int taskNum) {
-        return new MeownagerException("Mrowr! meownager.ui.Task number " + taskNum + " doesn’t exist!");
+        return new MeownagerException("Mrowr! meownager.ui.Task number " + taskNum + " doesn't exist!");
     }
 
     public static MeownagerException alreadyCompleted() {

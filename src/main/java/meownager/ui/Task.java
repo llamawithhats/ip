@@ -34,25 +34,25 @@ public class Task {
      * @param t Task.
      * @param input Input from user.
      */
-    public void markMessage(Task t, String input) {
+    public String markMessage(Task t, String input) {
         try {
             if (input.startsWith("mark ")) {
                 if (t.isDone) {
                     throw MeownagerException.alreadyCompleted();
                 } else {
                     t.mark();
-                    ui.showMarkedMessage(t);
+                    return ui.showMarkedMessage(t);
                 }
             } else { // unmark
                 if (!t.isDone) {
                     throw MeownagerException.stillUncompleted();
                 } else {
                     t.unmark();
-                    ui.showUnmarkedMessage(t);
+                    return ui.showUnmarkedMessage(t);
                 }
             }
         } catch (MeownagerException e) {
-            System.out.println(e.getMessage());
+            return ui.showError(e.getMessage());
         }
     }
 
@@ -62,8 +62,8 @@ public class Task {
      * @param t Task.
      * @param totalTasks Total number of tasks.
      */
-    public void deleteMessage(Task t, int totalTasks) {
-        ui.showDeletedMessage(t, totalTasks);
+    public String deleteMessage(Task t, int totalTasks) {
+        return ui.showDeletedMessage(t, totalTasks);
     }
 
     /**
