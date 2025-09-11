@@ -2,6 +2,7 @@ package meownager.ui;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Deals with making sense of the user command
@@ -174,7 +175,10 @@ public class Parser {
 
     private String handleFind(String input, TaskList tasks) {
         String filter = input.split("find ")[1].trim();
-        ArrayList<Task> filteredTasks = tasks.getFoundTasks(filter);
+        ArrayList<Task> filteredTasks = (ArrayList<Task>) tasks.getListOfTasks()
+                .stream()
+                .filter((t) -> t.getMessage().contains(filter))
+                .collect(Collectors.toList());
         return ui.showFilteredTasks(filteredTasks);
     }
 }
