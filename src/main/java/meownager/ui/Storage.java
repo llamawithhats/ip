@@ -35,8 +35,39 @@ public class Storage {
             }
             // create file if no exist
             f.createNewFile();
-            System.out.println("📁 New file created at: " + filePath);
+            System.out.println("New file created at: " + filePath);
         }
+    }
+
+    /**
+     * Returns corresponding type of Task object based on
+     * string line in storage file.
+     *
+     * @param parts Array of different parts of each file lines.
+     * @return Task assigned.
+     */
+    private Task assignTask(String[] parts) {
+        Task t;
+        if (parts[0].equals("T")) {
+            String desc = parts[2];
+            t = new Todo(desc);
+        } else if (parts[0].equals("D")) {
+            String desc = parts[2];
+            String date = parts[3];
+            t = new Deadline(desc, date);
+        } else {
+            assert parts[0].equals("E"); // assertions
+            String desc = parts[2];
+            String from = parts[3];
+            String to = parts[4];
+            t = new Event(desc, from, to);
+        }
+        assert (parts[1].equals("1")||parts[1].equals("0")); // assertions
+        boolean isDone = parts[1].equals("1");
+        if (isDone) {
+            t.mark();
+        }
+        return t;
     }
 
     /**
@@ -55,23 +86,8 @@ public class Storage {
             if (line.isEmpty()) continue; // skip blank lines
 
             String[] parts = line.split(" \\| ");
-            Task t;
-            if (parts[0].equals("T")) {
-                String desc = parts[2];
-                t = new Todo(desc);
-            } else if (parts[0].equals("D")) {
-                String desc = parts[2];
-                String date = parts[3];
-                t = new Deadline(desc, date);
-            } else {
-                String desc = parts[2];
-                String from = parts[3];
-                String to = parts[4];
-                t = new Event(desc, from, to);
-            }
-            if (parts[1].equals("1")) {
-                t.mark();
-            } // mark task as done if it was (default undone)
+            Task t = assignTask(parts);
+
             listOfTasks.add(t);
         }
         return listOfTasks;
