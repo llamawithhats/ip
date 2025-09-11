@@ -24,6 +24,25 @@ public class Parser {
         }
     }
 
+    boolean isByeCommand(String input) {
+        return input.equals("bye");
+    }
+
+    boolean isListCommand(String input) {
+        return input.equals("list");
+    }
+
+    boolean isMarkCommand(String input) {
+        return input.startsWith("mark ") || input.startsWith("unmark ");
+    }
+    boolean isModifyCommand(String input) {
+        return isMarkCommand(input) || input.startsWith("delete");
+    }
+
+    boolean isFindCommand(String input) {
+        return input.startsWith("find");
+    }
+
     /**
      * Handles commands by the user ('list', 'mark', 'unmark', 'delete' and addList commands).
      *
@@ -31,13 +50,13 @@ public class Parser {
      */
     public String handleCommand(String input, TaskList tasks, Storage storage) {
         try {
-            if (input.equals("bye")) {
+            if (isByeCommand(input)) {
                 return exit(tasks, storage);
-            } else if (input.equals("list")) {
+            } else if (isListCommand(input)) {
                 return handleList(tasks);
-            } else if (input.startsWith("mark ") || input.startsWith("unmark ") || input.startsWith("delete")) {
+            } else if (isModifyCommand(input)) {
                 return handleModifyList(input, tasks);
-            } else if (input.startsWith("find")) {
+            } else if (isFindCommand(input)) {
                 return handleFind(input, tasks);
             } else {
                 return handleAddList(input, tasks);
@@ -93,6 +112,39 @@ public class Parser {
         }
     }
 
+    private Task getTodo(String input) throws MeownagerException {
+        if (input.strip().equals("todo")) {
+            throw MeownagerException.emptyDescription("todo");
+        }
+        String descriptionTodo = input.split("todo ")[1];
+        return new Todo(descriptionTodo);
+    }
+
+    private Task getDeadline(String input) throws MeownagerException {
+        if (input.strip().equals("deadline")) {
+            throw MeownagerException.emptyDescription("deadline");
+        }
+        if (!input.contains("/by")) {
+            throw MeownagerException.missingDeadlineInfo();
+        }
+        String descriptionDead = input.split("deadline |/by")[1].trim();
+        String date = input.split("/by")[1].trim();
+        return new Deadline(descriptionDead, date);
+    }
+
+    private Task getEvent(String input) throws MeownagerException {
+        if (input.strip().equals("event")) {
+            throw MeownagerException.emptyDescription("event");
+        }
+        if (!input.contains("/from") || !input.contains("/to")) {
+            throw MeownagerException.missingEventInfo();
+        }
+        String descriptionEve = input.split("event |/from")[1].trim();
+        String from = input.split("/from | /to")[1]; // get from date
+        String to = input.split("/to ")[1]; // get to date
+        return new Event(descriptionEve, from, to);
+    }
+
     /**
      * Handles commands that adds to task list.
      *
@@ -107,34 +159,13 @@ public class Parser {
         }
         switch (type) {
         case TODO:
-            if (input.strip().equals("todo")) {
-                throw MeownagerException.emptyDescription("todo");
-            }
-            String descriptionTodo = input.split("todo ")[1];
-            t = new Todo(descriptionTodo);
+            t = getTodo(input);
             break;
         case DEADLINE:
-            if (input.strip().equals("deadline")) {
-                throw MeownagerException.emptyDescription("deadline");
-            }
-            if (!input.contains("/by")) {
-                throw MeownagerException.missingDeadlineInfo();
-            }
-            String descriptionDead = input.split("deadline |/by")[1].trim();
-            String date = input.split("/by")[1].trim(); // get deadline
-            t = new Deadline(descriptionDead, date);
+            t = getDeadline(input);
             break;
         case EVENT:
-            if (input.strip().equals("event")) {
-                throw MeownagerException.emptyDescription("event");
-            }
-            if (!input.contains("/from") || !input.contains("/to")) {
-                throw MeownagerException.missingEventInfo();
-            }
-            String descriptionEve = input.split("event |/from")[1].trim();
-            String from = input.split("/from | /to")[1]; // get from date
-            String to = input.split("/to ")[1]; // get to date
-            t = new Event(descriptionEve, from, to);
+            t = getEvent(input);
             break;
         }
         tasks.add(t); // add task to list
