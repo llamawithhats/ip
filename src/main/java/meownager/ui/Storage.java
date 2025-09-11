@@ -35,7 +35,7 @@ public class Storage {
             }
             // create file if no exist
             f.createNewFile();
-            System.out.println("📁 New file created at: " + filePath);
+            System.out.println("New file created at: " + filePath);
         }
     }
 
@@ -64,11 +64,13 @@ public class Storage {
                 String date = parts[3];
                 t = new Deadline(desc, date);
             } else {
+                assert parts[0].equals("E"); // assertions
                 String desc = parts[2];
                 String from = parts[3];
                 String to = parts[4];
                 t = new Event(desc, from, to);
             }
+            assert (parts[1].equals("1")||parts[1].equals("0")); // assertions
             if (parts[1].equals("1")) {
                 t.mark();
             } // mark task as done if it was (default undone)
