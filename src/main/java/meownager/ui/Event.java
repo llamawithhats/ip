@@ -23,18 +23,12 @@ public class Event extends Task {
 
     @Override
     public String toFileString() {
-        String fileContent = "";
-        Pattern pattern = Pattern.compile("\\[(.)]\\[(.)] (.+) \\(from: (.+) to: (.+)\\)");
-        Matcher m = pattern.matcher(this.getMessage());
-        if (m.matches()) {
-            String type = m.group(1);
-            String status = m.group(2).equals("X") ? "1" : "0";
-            String desc = m.group(3);
-            String from = m.group(4);
-            String to = m.group(5);
-            fileContent += type + " | " + status + " | " + desc + " | "
-                    + from + " | " + to + "\n";
-        }
+        String status = this.getStatusNumber();
+        String desc = this.description;
+        String from = this.from;
+        String to = this.to;
+        String fileContent = "E" + " | " + status + " | " + desc + " | "
+                + from + " | " + to + "\n";
         return fileContent;
     }
 

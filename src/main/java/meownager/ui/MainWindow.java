@@ -34,6 +34,8 @@ public class MainWindow extends AnchorPane {
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+        assert userImage != null : "User image should exist";
+        assert meowImage != null : "Meow image should exist";
     }
 
     /** Injects the Meow instance */
