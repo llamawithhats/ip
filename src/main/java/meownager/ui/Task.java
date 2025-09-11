@@ -26,6 +26,28 @@ public class Task {
         return (isDone ? "[X] " : "[ ] ");
     }
 
+    public String getStatusNumber() {
+        return isDone ? "1" : "0";
+    }
+
+    private String mark(Task t) throws MeownagerException {
+        if (t.isDone) {
+            throw MeownagerException.alreadyCompleted();
+        } else {
+            t.mark();
+            return ui.showMarkedMessage(t);
+        }
+    }
+
+    private String unmark(Task t) throws MeownagerException {
+        if (!t.isDone) {
+            throw MeownagerException.stillUncompleted();
+        } else {
+            t.unmark();
+            return ui.showUnmarkedMessage(t);
+        }
+    }
+
     /**
      * Marks or unmarks the task according to input.
      * If attempt to mark the task when already marked or
@@ -35,21 +57,15 @@ public class Task {
      * @param input Input from user.
      */
     public String markMessage(Task t, String input) {
+        boolean isMark = input.startsWith("mark ");
+        boolean isUnmark = input.startsWith("unmark ");
         try {
-            if (input.startsWith("mark ")) {
-                if (t.isDone) {
-                    throw MeownagerException.alreadyCompleted();
-                } else {
-                    t.mark();
-                    return ui.showMarkedMessage(t);
-                }
-            } else { // unmark
-                if (!t.isDone) {
-                    throw MeownagerException.stillUncompleted();
-                } else {
-                    t.unmark();
-                    return ui.showUnmarkedMessage(t);
-                }
+            if (isMark) {
+                return mark(t);
+            } else if (isUnmark) {
+                return unmark(t);
+            } else {
+                throw new MeownagerException("incorrect input!");
             }
         } catch (MeownagerException e) {
             return ui.showError(e.getMessage());
