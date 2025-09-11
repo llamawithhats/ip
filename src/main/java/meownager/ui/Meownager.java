@@ -1,7 +1,6 @@
 package meownager.ui;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 /**
  * Represents a task organiser system to help keep track of tasks.
