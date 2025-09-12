@@ -7,7 +7,7 @@ public class Tag {
         this.tagMsg = tagMsg;
     }
 
-    public String showTag() {
+    public String showTagMsg() {
         return this.tagMsg;
     }
 

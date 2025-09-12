@@ -36,7 +36,7 @@ public class Event extends Task {
         if (this.tag == null) {
             fileContent = giveBasicFileCont() + "\n";
         } else {
-            fileContent = giveBasicFileCont() + " | " + this.tag.showTag() + "\n";
+            fileContent = giveBasicFileCont() + " | " + this.tag.showTagMsg() + "\n";
         }
 
         return fileContent;

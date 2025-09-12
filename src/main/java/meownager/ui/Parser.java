@@ -55,7 +55,7 @@ public class Parser {
     }
 
     boolean isFindCommand(String input) {
-        return input.startsWith("find");
+        return input.startsWith("find") || input.startsWith("findtag");
     }
 
     boolean isHelpCommand(String input) {
@@ -112,6 +112,10 @@ public class Parser {
         }
     }
 
+    private int findTaskNumber(String input) {
+        return Integer.parseInt(input.split(" ")[1]);
+    }
+
     /**
      * Handles 'mark', 'unmark' and 'delete' commands.
      *
@@ -119,8 +123,7 @@ public class Parser {
      * @throws MeownagerException If inputted task number is invalid.
      */
     private String handleModifyList(String input, TaskList tasks) throws MeownagerException {
-        // finding task no. of input
-        int num = Integer.parseInt(input.split(" ")[1]);
+        int num = findTaskNumber(input);
         if (num <= 0 || num > tasks.size()) { // not a task number
             throw MeownagerException.outOfBoundsTaskNumber(num);
         }
@@ -139,7 +142,8 @@ public class Parser {
             String newTagMsg = parts[2];
             t.editTag(newTagMsg);
             return ui.showEditedTag(t);
-        } else { // mark, unmark
+        } else {
+            assert isMarkOrUnmark(input) : "Should be mark/unmark command";
             return t.markMessage(t, input);
         }
     }
@@ -221,13 +225,30 @@ public class Parser {
         return ui.showTaskAdded(t, tasks.size());
     }
 
-    private String handleFind(String input, TaskList tasks) {
-        String filter = input.split("find ")[1].trim();
+    private String findTasksWithContent(String input, TaskList tasks) {
+        String filter = input.split("find")[1].trim();
         ArrayList<Task> filteredTasks = (ArrayList<Task>) tasks.getListOfTasks()
                 .stream()
                 .filter((t) -> t.getMessage().contains(filter))
                 .collect(Collectors.toList());
         return ui.showFilteredTasks(filteredTasks);
+    }
+
+    private String findTaskWithTag(String input, TaskList tasks) {
+        String filter = input.split("findtag")[1].trim();
+        ArrayList<Task> filteredTasks = (ArrayList<Task>) tasks.getListOfTasks()
+                .stream()
+                .filter((t) -> t.hasTag())
+                .filter((t) -> t.getTagMsg().contains(filter))
+                .collect(Collectors.toList());
+        return ui.showFilteredTasks(filteredTasks);
+    }
+
+    private String handleFind(String input, TaskList tasks) {
+        if (input.startsWith("findtag")) {
+            return findTaskWithTag(input, tasks);
+        }
+        return findTasksWithContent(input, tasks);
     }
 
     private String handleHelp() {

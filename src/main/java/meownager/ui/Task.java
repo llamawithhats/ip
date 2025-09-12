@@ -49,6 +49,10 @@ public class Task {
         return isDone ? "1" : "0";
     }
 
+    public boolean hasTag() {
+        return this.tag != null;
+    }
+
     private String mark(Task t) throws MeownagerException {
         if (t.isDone) {
             throw MeownagerException.alreadyCompleted();
@@ -116,6 +120,10 @@ public class Task {
         }
     }
 
+    public String getTagMsg() {
+        return this.tag.showTagMsg();
+    }
+
     /**
      * Returns the message of the task to be displayed.
      * E.g. [X] read book
@@ -126,6 +134,6 @@ public class Task {
         if (this.tag == null) {
             return getStatus() + this.description;
         }
-        return getStatus() + "*" + this.tag.showTag() + "* " + this.description;
+        return getStatus() + "*" + this.tag.showTagMsg() + "* " + this.description;
     }
 }
