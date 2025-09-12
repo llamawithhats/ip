@@ -34,14 +34,32 @@ public class Parser {
     }
 
     boolean isMarkCommand(String input) {
-        return input.startsWith("mark ") || input.startsWith("unmark ");
+        return input.startsWith("mark ");
     }
+    boolean isUnmarkCommand(String input) {
+        return input.startsWith("unmark ");
+    }
+    boolean isMarkOrUnmark(String input) {
+        return isUnmarkCommand(input) || isMarkCommand(input);
+    }
+    boolean isDeleteCommand(String input) {
+        return input.startsWith("delete") || input.startsWith("deltag");
+    }
+    boolean isEditTagCommand(String input) {
+        return input.startsWith("edittag");
+    }
+
     boolean isModifyCommand(String input) {
-        return isMarkCommand(input) || input.startsWith("delete");
+        return isMarkOrUnmark(input) || isDeleteCommand(input)
+                || isEditTagCommand(input);
     }
 
     boolean isFindCommand(String input) {
-        return input.startsWith("find");
+        return input.startsWith("find") || input.startsWith("findtag");
+    }
+
+    boolean isHelpCommand(String input) {
+        return input.trim().equals("/help");
     }
 
     /**
@@ -59,6 +77,8 @@ public class Parser {
                 return handleModifyList(input, tasks);
             } else if (isFindCommand(input)) {
                 return handleFind(input, tasks);
+            } else if (isHelpCommand(input)) {
+                return handleHelp();
             } else {
                 return handleAddList(input, tasks);
             }
@@ -92,6 +112,10 @@ public class Parser {
         }
     }
 
+    private int findTaskNumber(String input) {
+        return Integer.parseInt(input.split(" ")[1]);
+    }
+
     /**
      * Handles 'mark', 'unmark' and 'delete' commands.
      *
@@ -99,26 +123,48 @@ public class Parser {
      * @throws MeownagerException If inputted task number is invalid.
      */
     private String handleModifyList(String input, TaskList tasks) throws MeownagerException {
-        // finding task no. of input
-        int num = Integer.parseInt(input.split(" ")[1]);
+        int num = findTaskNumber(input);
         if (num <= 0 || num > tasks.size()) { // not a task number
             throw MeownagerException.outOfBoundsTaskNumber(num);
         }
         Task t = tasks.get(num - 1);
         if (input.startsWith("delete")) {
             tasks.remove(t);
-            return t.deleteMessage(t, tasks.size());
-        } else { // mark, unmark
+            return ui.showDeletedMessage(t, tasks.size());
+        } else if (input.startsWith("deltag")) {
+            t.deleteTag();
+            return ui.showDeletedTag(t);
+        } else if (isEditTagCommand(input)) {
+            String[] parts = input.split(" ");
+            if (parts.length != 3) {
+                return ui.showError("Missing new tag msg!");
+            }
+            String newTagMsg = parts[2];
+            t.editTag(newTagMsg);
+            return ui.showEditedTag(t);
+        } else {
+            assert isMarkOrUnmark(input) : "Should be mark/unmark command";
             return t.markMessage(t, input);
         }
+    }
+
+    private boolean hasTag(String input) {
+        return input.contains("/tag");
+    }
+
+    private String getTagMsg(String input) {
+        return input.split("/tag")[1].trim();
     }
 
     private Task getTodo(String input) throws MeownagerException {
         if (input.strip().equals("todo")) {
             throw MeownagerException.emptyDescription("todo");
         }
-        String descriptionTodo = input.split("todo ")[1];
-        return new Todo(descriptionTodo);
+        String descr = input.split("todo |/tag")[1].trim();
+        if (hasTag(input)) {
+            return new Todo(descr, getTagMsg(input));
+        }
+        return new Todo(descr);
     }
 
     private Task getDeadline(String input) throws MeownagerException {
@@ -128,9 +174,12 @@ public class Parser {
         if (!input.contains("/by")) {
             throw MeownagerException.missingDeadlineInfo();
         }
-        String descriptionDead = input.split("deadline |/by")[1].trim();
-        String date = input.split("/by")[1].trim();
-        return new Deadline(descriptionDead, date);
+        String descr = input.split("deadline |/by")[1].trim();
+        String date = input.split("/by |/tag")[1].trim();
+        if (hasTag(input)) {
+            return new Deadline(descr, date, getTagMsg(input));
+        }
+        return new Deadline(descr, date);
     }
 
     private Task getEvent(String input) throws MeownagerException {
@@ -140,10 +189,13 @@ public class Parser {
         if (!input.contains("/from") || !input.contains("/to")) {
             throw MeownagerException.missingEventInfo();
         }
-        String descriptionEve = input.split("event |/from")[1].trim();
+        String descr = input.split("event |/from")[1].trim();
         String from = input.split("/from | /to")[1]; // get from date
-        String to = input.split("/to ")[1]; // get to date
-        return new Event(descriptionEve, from, to);
+        String to = input.split("/to | /tag")[1]; // get to date
+        if (hasTag(input)) {
+            return new Event(descr, from, to, getTagMsg(input));
+        }
+        return new Event(descr, from, to);
     }
 
     /**
@@ -173,12 +225,34 @@ public class Parser {
         return ui.showTaskAdded(t, tasks.size());
     }
 
-    private String handleFind(String input, TaskList tasks) {
-        String filter = input.split("find ")[1].trim();
+    private String findTasksWithContent(String input, TaskList tasks) {
+        String filter = input.split("find")[1].trim();
         ArrayList<Task> filteredTasks = (ArrayList<Task>) tasks.getListOfTasks()
                 .stream()
                 .filter((t) -> t.getMessage().contains(filter))
                 .collect(Collectors.toList());
         return ui.showFilteredTasks(filteredTasks);
     }
+
+    private String findTaskWithTag(String input, TaskList tasks) {
+        String filter = input.split("findtag")[1].trim();
+        ArrayList<Task> filteredTasks = (ArrayList<Task>) tasks.getListOfTasks()
+                .stream()
+                .filter((t) -> t.hasTag())
+                .filter((t) -> t.getTagMsg().contains(filter))
+                .collect(Collectors.toList());
+        return ui.showFilteredTasks(filteredTasks);
+    }
+
+    private String handleFind(String input, TaskList tasks) {
+        if (input.startsWith("findtag")) {
+            return findTaskWithTag(input, tasks);
+        }
+        return findTasksWithContent(input, tasks);
+    }
+
+    private String handleHelp() {
+        return ui.showCommandBook();
+    }
+
 }

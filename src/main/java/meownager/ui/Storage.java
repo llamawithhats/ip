@@ -39,6 +39,82 @@ public class Storage {
         }
     }
 
+    private boolean isTodo(String[] parts) {
+        return parts[0].equals("T");
+    }
+
+    private boolean isDeadline(String[] parts) {
+        return parts[0].equals("D");
+    }
+
+    private boolean isEvent(String[] parts) {
+        return parts[0].equals("E");
+    }
+
+    private boolean isDone(String[] parts) {
+        return parts[1].equals("1");
+    }
+
+    private boolean isUndone(String[] parts) {
+        return parts[1].equals("0");
+    }
+
+    /**
+     * Checks if loaded task from storage file is tagged.
+     *
+     * @param parts Parts from the file content.
+     * @return True if have tag, else false.
+     */
+    private boolean hasTag(String[] parts) {
+        int size = parts.length;
+        // tags are at the back of the line
+        if (isTodo(parts) && size == 4) { // if no tag, size is 3 (fixed)
+            return true;
+        } else if (isDeadline(parts) && size == 5) { // if no tag, size is 4 (fixed)
+            return true;
+        } else if (isEvent(parts) && size == 6) { // if no tag, size is 5 (fixed)
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private String retrieveTag(String[] parts) {
+        return parts[parts.length - 1];
+    }
+
+    private Task assignTodo(String[] parts) {
+        String desc = parts[2];
+        if (hasTag(parts)) {
+            return new Todo(desc, retrieveTag(parts));
+        } else {
+            return new Todo(desc);
+        }
+    }
+
+    private Task assignDead(String[] parts) {
+        String desc = parts[2];
+        String date = parts[3];
+        if (hasTag(parts)) {
+            return new Deadline(desc, date, retrieveTag(parts));
+        } else {
+            return new Deadline(desc, date);
+        }
+    }
+
+    private Task assignEvent(String[] parts) {
+        String desc = parts[2];
+        String from = parts[3];
+        String to = parts[4];
+        if (hasTag(parts)) {
+            return new Event(desc, from, to, retrieveTag(parts));
+        } else {
+            return new Event(desc, from, to);
+        }
+    }
+
+
+
     /**
      * Returns corresponding type of Task object based on
      * string line in storage file.
@@ -48,23 +124,16 @@ public class Storage {
      */
     private Task assignTask(String[] parts) {
         Task t;
-        if (parts[0].equals("T")) {
-            String desc = parts[2];
-            t = new Todo(desc);
-        } else if (parts[0].equals("D")) {
-            String desc = parts[2];
-            String date = parts[3];
-            t = new Deadline(desc, date);
+        if (isTodo(parts)) {
+            t = assignTodo(parts);
+        } else if (isDeadline(parts)) {
+            t = assignDead(parts);
         } else {
-            assert parts[0].equals("E"); // assertions
-            String desc = parts[2];
-            String from = parts[3];
-            String to = parts[4];
-            t = new Event(desc, from, to);
+            assert isEvent(parts); // assertions
+            t = assignEvent(parts);
         }
-        assert (parts[1].equals("1")||parts[1].equals("0")); // assertions
-        boolean isDone = parts[1].equals("1");
-        if (isDone) {
+        assert (isDone(parts) || isUndone(parts)); // assertions
+        if (isDone(parts)) {
             t.mark();
         }
         return t;

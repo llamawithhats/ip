@@ -6,13 +6,32 @@ package meownager.ui;
  * @author Yu Tingan
  */
 public class Task {
-    protected String description;
+    String description;
     protected boolean isDone;
     private Ui ui = new Ui();
+    Tag tag;
 
+    /**
+     * Constructs a Task object with no tag.
+     *
+     * @param description Task description.
+     */
     public Task(String description) {
         this.description = description;
         this.isDone = false; // start with false
+        this.tag = null;
+    }
+
+    /**
+     * Constructs a Task object with a tag.
+     *
+     * @param description Task description.
+     * @param tagMsg Tag assigned to the task.
+     */
+    public Task(String description, String tagMsg) {
+        this.description = description;
+        this.isDone = false; // start with false
+        this.tag = new Tag(tagMsg);
     }
 
     public void mark() {
@@ -28,6 +47,10 @@ public class Task {
 
     public String getStatusNumber() {
         return isDone ? "1" : "0";
+    }
+
+    public boolean hasTag() {
+        return this.tag != null;
     }
 
     private String mark(Task t) throws MeownagerException {
@@ -73,16 +96,6 @@ public class Task {
     }
 
     /**
-     * Show deleted message when task is deleted.
-     *
-     * @param t Task.
-     * @param totalTasks Total number of tasks.
-     */
-    public String deleteMessage(Task t, int totalTasks) {
-        return ui.showDeletedMessage(t, totalTasks);
-    }
-
-    /**
      * Returns the content of the task in the specific format required
      * to be stored in the file (i.e. x | x | x ...).
      *
@@ -93,12 +106,34 @@ public class Task {
     };
 
     /**
+     * Deletes tag belonging to the task.
+     */
+    public void deleteTag() {
+        this.tag = null;
+    }
+
+    public void editTag(String newTagMsg) {
+        if (this.tag == null) {
+            this.tag = new Tag(newTagMsg);
+        } else {
+            this.tag.editTag(newTagMsg);
+        }
+    }
+
+    public String getTagMsg() {
+        return this.tag.showTagMsg();
+    }
+
+    /**
      * Returns the message of the task to be displayed.
      * E.g. [X] read book
      *
      * @return Task Message.
      */
     public String getMessage() {
-        return getStatus() + this.description;
+        if (this.tag == null) {
+            return getStatus() + this.description;
+        }
+        return getStatus() + "*" + this.tag.showTagMsg() + "* " + this.description;
     }
 }
