@@ -45,9 +45,13 @@ public class Parser {
     boolean isDeleteCommand(String input) {
         return input.startsWith("delete") || input.startsWith("deltag");
     }
+    boolean isEditTagCommand(String input) {
+        return input.startsWith("edittag");
+    }
 
     boolean isModifyCommand(String input) {
-        return isMarkOrUnmark(input) || isDeleteCommand(input);
+        return isMarkOrUnmark(input) || isDeleteCommand(input)
+                || isEditTagCommand(input);
     }
 
     boolean isFindCommand(String input) {
@@ -127,6 +131,14 @@ public class Parser {
         } else if (input.startsWith("deltag")) {
             t.deleteTag();
             return ui.showDeletedTag(t);
+        } else if (isEditTagCommand(input)) {
+            String[] parts = input.split(" ");
+            if (parts.length != 3) {
+                return ui.showError("Missing new tag msg!");
+            }
+            String newTagMsg = parts[2];
+            t.editTag(newTagMsg);
+            return ui.showEditedTag(t);
         } else { // mark, unmark
             return t.markMessage(t, input);
         }

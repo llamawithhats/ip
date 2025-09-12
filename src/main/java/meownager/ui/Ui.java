@@ -58,6 +58,12 @@ public class Ui {
                 + "\n\t" + t.getMessage();
     }
 
+    public String showEditedTag(Task t) {
+        return "Meow! I've edited your tag message~ \n"
+                + showEditedTask()
+                + "\n\t" + t.getMessage();
+    }
+
     public String showTaskAdded(Task t, int total) {
         return "Meow-K! I've added this task:"
                 + "\n\t" + t.getMessage()
@@ -84,7 +90,7 @@ public class Ui {
                 + "\t-> include '/tag {tag msg}' at the end of your task!\n"
                 + "Delete tags?\n"
                 + "\t-> 'deltag {task no.}'\n"
-                + "Edit tags?\n"
+                + "Edit tags/introduce tags to existing task?\n"
                 + "\t-> 'edittag {task no.} {new tag msg}'\n"
                 + "Find tags?\n"
                 + "\t-> 'findtag {tag msg}'\n\n";
@@ -97,10 +103,14 @@ public class Ui {
                 + "To find a task: \n\t-> 'find {content}'";
     }
 
+    private String divider() {
+        return "____________________________________\n";
+    }
+
     public String showCommandBook() {
         String s = "Lost in the litter of commands? Here’s your paw-some guide! \uD83D\uDC31 \n\n";
-        s += addTasks();
-        s += tagCommands();
+        s += addTasks() + divider();
+        s += tagCommands() + divider();
         s += otherCommands();
         return s;
     }

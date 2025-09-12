@@ -108,6 +108,14 @@ public class Task {
         this.tag = null;
     }
 
+    public void editTag(String newTagMsg) {
+        if (this.tag == null) {
+            this.tag = new Tag(newTagMsg);
+        } else {
+            this.tag.editTag(newTagMsg);
+        }
+    }
+
     /**
      * Returns the message of the task to be displayed.
      * E.g. [X] read book
