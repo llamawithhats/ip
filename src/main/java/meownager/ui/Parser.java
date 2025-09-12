@@ -43,7 +43,7 @@ public class Parser {
         return isUnmarkCommand(input) || isMarkCommand(input);
     }
     boolean isDeleteCommand(String input) {
-        return input.startsWith("delete");
+        return input.startsWith("delete") || input.startsWith("deltag");
     }
 
     boolean isModifyCommand(String input) {
@@ -123,7 +123,10 @@ public class Parser {
         Task t = tasks.get(num - 1);
         if (input.startsWith("delete")) {
             tasks.remove(t);
-            return t.deleteMessage(t, tasks.size());
+            return ui.showDeletedMessage(t, tasks.size());
+        } else if (input.startsWith("deltag")) {
+            t.deleteTag();
+            return ui.showDeletedTag(t);
         } else { // mark, unmark
             return t.markMessage(t, input);
         }

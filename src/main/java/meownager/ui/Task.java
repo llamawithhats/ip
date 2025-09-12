@@ -92,16 +92,6 @@ public class Task {
     }
 
     /**
-     * Show deleted message when task is deleted.
-     *
-     * @param t Task.
-     * @param totalTasks Total number of tasks.
-     */
-    public String deleteMessage(Task t, int totalTasks) {
-        return ui.showDeletedMessage(t, totalTasks);
-    }
-
-    /**
      * Returns the content of the task in the specific format required
      * to be stored in the file (i.e. x | x | x ...).
      *

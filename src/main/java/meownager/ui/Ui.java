@@ -48,6 +48,16 @@ public class Ui {
                 + "\nYou now have " + totalTasks + " tasks left!";
     }
 
+    public String showEditedTask() {
+        return "This is your edited task: ";
+    }
+
+    public String showDeletedTag(Task t) {
+        return "Hehe, I've clawed away that tag~ \uD83D\uDC3E \n"
+                + showEditedTask()
+                + "\n\t" + t.getMessage();
+    }
+
     public String showTaskAdded(Task t, int total) {
         return "Meow-K! I've added this task:"
                 + "\n\t" + t.getMessage()
@@ -66,9 +76,18 @@ public class Ui {
         return "To add tasks: \n"
                 + "\t-> todo: 'todo {task}'\n"
                 + "\t-> deadline: 'deadline {task} /by {date}'\n"
-                + "\t-> event: 'event {task} /from {start time} /to {end time}'\n"
-                + "Want to add tags?\n"
-                + "\t-> include '/tag {tag msg}' at the end of your task!\n\n";
+                + "\t-> event: 'event {task} /from {start time} /to {end time}'\n\n";
+    }
+
+    private String tagCommands() {
+        return "Want to add tags?\n"
+                + "\t-> include '/tag {tag msg}' at the end of your task!\n"
+                + "Delete tags?\n"
+                + "\t-> 'deltag {task no.}'\n"
+                + "Edit tags?\n"
+                + "\t-> 'edittag {task no.} {new tag msg}'\n"
+                + "Find tags?\n"
+                + "\t-> 'findtag {tag msg}'\n\n";
     }
 
     private String otherCommands() {
@@ -81,6 +100,7 @@ public class Ui {
     public String showCommandBook() {
         String s = "Lost in the litter of commands? Here’s your paw-some guide! \uD83D\uDC31 \n\n";
         s += addTasks();
+        s += tagCommands();
         s += otherCommands();
         return s;
     }
