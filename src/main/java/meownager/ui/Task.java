@@ -6,13 +6,32 @@ package meownager.ui;
  * @author Yu Tingan
  */
 public class Task {
-    protected String description;
+    String description;
     protected boolean isDone;
     private Ui ui = new Ui();
+    Tag tag;
 
+    /**
+     * Constructs a Task object with no tag.
+     *
+     * @param description Task description.
+     */
     public Task(String description) {
         this.description = description;
         this.isDone = false; // start with false
+        this.tag = null;
+    }
+
+    /**
+     * Constructs a Task object with a tag.
+     *
+     * @param description Task description.
+     * @param tagMsg Tag assigned to the task.
+     */
+    public Task(String description, String tagMsg) {
+        this.description = description;
+        this.isDone = false; // start with false
+        this.tag = new Tag(tagMsg);
     }
 
     public void mark() {
@@ -93,12 +112,22 @@ public class Task {
     };
 
     /**
+     * Deletes tag belonging to the task.
+     */
+    public void deleteTag() {
+        this.tag = null;
+    }
+
+    /**
      * Returns the message of the task to be displayed.
      * E.g. [X] read book
      *
      * @return Task Message.
      */
     public String getMessage() {
-        return getStatus() + this.description;
+        if (this.tag == null) {
+            return getStatus() + this.description;
+        }
+        return getStatus() + "*" + this.tag.showTag() + "* " + this.description;
     }
 }

@@ -1,8 +1,5 @@
 package meownager.ui;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * Represents an event task with a due date.
  *
@@ -21,14 +18,27 @@ public class Event extends Task {
         this.to = to;
     }
 
+    public Event(String description, String from, String to, String tagMsg) {
+        super(description, tagMsg);
+        this.from = from;
+        this.to = to;
+    }
+
+    String giveBasicFileCont() {
+        return "E" + " | " + this.getStatusNumber() + " | " + this.description
+                + " | " + this.from + " | " + this.to;
+    }
+
     @Override
     public String toFileString() {
-        String status = this.getStatusNumber();
-        String desc = this.description;
-        String from = this.from;
-        String to = this.to;
-        String fileContent = "E" + " | " + status + " | " + desc + " | "
-                + from + " | " + to + "\n";
+        String fileContent;
+
+        if (this.tag == null) {
+            fileContent = giveBasicFileCont() + "\n";
+        } else {
+            fileContent = giveBasicFileCont() + " | " + this.tag.showTag() + "\n";
+        }
+
         return fileContent;
     }
 

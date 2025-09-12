@@ -1,8 +1,5 @@
 package meownager.ui;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * Represents a todo task.
  *
@@ -15,12 +12,23 @@ public class Todo extends Task {
         super(description);
     }
 
+    public Todo(String description, String tagMsg) {
+        super(description, tagMsg);
+    }
+
+    String giveBasicFileCont() {
+        return "T" + " | " + this.getStatusNumber() + " | " + this.description;
+    }
+
     @Override
     public String toFileString() {
-        String status = this.getStatusNumber();
-        assert (status.equals("0") || status.equals("1"));
-        String desc = this.description;
-        String fileContent = "T" + " | " + status + " | " + desc + "\n";
+        String fileContent;
+
+        if (this.tag == null) {
+            fileContent = giveBasicFileCont() + "\n";
+        } else {
+            fileContent = giveBasicFileCont() + " | " + this.tag.showTag() + "\n";
+        }
         return fileContent;
     }
 

@@ -12,7 +12,8 @@ public class Ui {
     public String showGreetings() {
         String logo = "  ( =＾･ω･＾=)ノ <3\n";
         return "Hello! I'm your resident MEOWnager!\n" + logo
-                + "Anything I can do for you neow?\n";
+                + "Anything I can do for you neow?\n"
+                + "(if require command meowsistance, type '/help')";
     }
 
     public String showFarewell() {
@@ -58,6 +59,29 @@ public class Ui {
         for (int i = 0; i < listOfTasks.size(); i++) {
             s += "\n" + (i + 1) + "." + listOfTasks.get(i).getMessage();
         }
+        return s;
+    }
+
+    private String addTasks() {
+        return "To add tasks: \n"
+                + "\t-> todo: 'todo {task}'\n"
+                + "\t-> deadline: 'deadline {task} /by {date}'\n"
+                + "\t-> event: 'event {task} /from {start time} /to {end time}'\n"
+                + "Want to add tags?\n"
+                + "\t-> include '/tag {tag msg}' at the end of your task!\n\n";
+    }
+
+    private String otherCommands() {
+        return "To get list of tasks: \n\t-> 'list'\n"
+                + "To mark/unmark a task: \n\t-> 'mark {task no.}' / 'unmark {task no.}'\n"
+                + "To delete a task: \n\t-> 'delete {task no.}'\n"
+                + "To find a task: \n\t-> 'find {content}'";
+    }
+
+    public String showCommandBook() {
+        String s = "Lost in the litter of commands? Here’s your paw-some guide! \uD83D\uDC31 \n\n";
+        s += addTasks();
+        s += otherCommands();
         return s;
     }
 

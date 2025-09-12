@@ -32,6 +32,20 @@ public class Deadline extends Task {
         }
     }
 
+    public Deadline(String description, String date, String tagMsg) {
+        super(description, tagMsg);
+        // checking if input is in specific date format
+        Pattern patternWithTime = Pattern.compile("(\\d{1,2})/(\\d{1,2})/(\\d{4}) (\\d{4})");
+        Matcher mTime = patternWithTime.matcher(date);
+        Pattern patternNoTime = Pattern.compile("(\\d{1,2})/(\\d{1,2})/(\\d{4})");
+        Matcher mNoTime = patternNoTime.matcher(date);
+        if (mTime.matches() || mNoTime.matches()) { // if input date is in the specific format
+            this.date = parseAndFormatDate(date);
+        } else {
+            this.date = date; // fallback to raw input (e.g. Monday 4pm)
+        }
+    }
+
     /**
      * Returns formatted date when user inputs date in a specific
      * format (i.e. d/M/yyyy HHmm or d/M/yyyy).
@@ -62,13 +76,21 @@ public class Deadline extends Task {
         return null; // won't happen
     }
 
+    String giveBasicFileCont() {
+        return "D" + " | " + this.getStatusNumber() + " | " + this.description
+                + " | " + this.date;
+    }
+
     @Override
     public String toFileString() {
-        String status = this.getStatusNumber();
-        assert (status.equals("0") || status.equals("1"));
-        String desc = this.description;
-        String date = this.date;
-        String fileContent = "D" + " | " + status + " | " + desc + " | " + date + "\n";
+        String fileContent;
+
+        if (tag == null) {
+            fileContent = giveBasicFileCont() + "\n";
+        } else {
+            fileContent = giveBasicFileCont() + " | " + this.tag.showTag() + "\n";
+        }
+
         return fileContent;
     }
 
