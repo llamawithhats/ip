@@ -31,6 +31,7 @@
         </HBox>
         <ScrollPane fx:id="scrollPane"
                     fitToWidth="true"
+                    fitToHeight="true"
                     hbarPolicy="NEVER"
                     vbarPolicy="AS_NEEDED"
                     AnchorPane.topAnchor="0.0"
@@ -38,7 +39,9 @@
                     AnchorPane.rightAnchor="0.0"
                     AnchorPane.bottomAnchor="41.0">
             <content>
-                <VBox fx:id="dialogContainer" />
+                <VBox fx:id="dialogContainer"
+                      styleClass="vbox"
+                      stylesheets="/view/background.css" />
             </content>
         </ScrollPane>
     </children>
