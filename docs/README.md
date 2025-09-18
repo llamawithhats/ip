@@ -22,7 +22,7 @@ Not only that, it is **FREE!**
 
 ### Want it? I know you do. 
 All you have to do is:
-1. download it from [here](https://nus-cs2103-ay2526s1.github.io/website/schedule/week4/project.html)
+1. download it from [here](https://github.com/llamawithhats/ip.git)
 2. double click it
 3. add your tasks
 4. and let it meow-nage your tasks! 😸
