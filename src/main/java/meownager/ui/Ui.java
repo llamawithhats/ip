@@ -100,7 +100,11 @@ public class Ui {
         return "To get list of tasks: \n\t-> 'list'\n"
                 + "To mark/unmark a task: \n\t-> 'mark {task no.}' / 'unmark {task no.}'\n"
                 + "To delete a task: \n\t-> 'delete {task no.}'\n"
-                + "To find a task: \n\t-> 'find {content}'";
+                + "To find a task: \n\t-> 'find {content}'\n\n";
+    }
+
+    private String byeCommand() {
+        return "Done with your tasks?\n\t-> 'bye' \nto exit the program!";
     }
 
     private String divider() {
@@ -111,7 +115,8 @@ public class Ui {
         String s = "Lost in the litter of commands? Here’s your paw-some guide! \uD83D\uDC31 \n\n";
         s += addTasks() + divider();
         s += tagCommands() + divider();
-        s += otherCommands();
+        s += otherCommands() + divider();
+        s += byeCommand();
         return s;
     }
 
