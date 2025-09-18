@@ -7,6 +7,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -23,6 +24,8 @@ public class MainWindow extends AnchorPane {
     private TextField userInput;
     @FXML
     private Button sendButton;
+    @FXML
+    private HBox inputArea;
 
     private Meownager meownager;
 
@@ -36,6 +39,11 @@ public class MainWindow extends AnchorPane {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
         assert userImage != null : "User image should exist";
         assert meowImage != null : "Meow image should exist";
+        inputArea.widthProperty().addListener((obs, oldVal, newVal) -> {
+            double totalWidth = newVal.doubleValue();
+            userInput.setPrefWidth(totalWidth * 0.8);
+            sendButton.setPrefWidth(totalWidth * 0.2);
+        });
     }
 
     /** Injects the Meow instance */
