@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 
 /**
@@ -24,6 +25,8 @@ public class DialogBox extends HBox {
     private Label dialog;
     @FXML
     private ImageView displayPicture;
+    @FXML
+    private StackPane chatBubble;
 
     private DialogBox(String text, Image img) {
         try {
@@ -53,11 +56,24 @@ public class DialogBox extends HBox {
     }
 
     public static DialogBox getUserDialog(String text, Image img) {
-        return new DialogBox(text, img);
+        DialogBox db = new DialogBox(text, img);
+        db.chatBubble.setStyle(
+                "-fx-background-color: #fff2cc; "
+                + "-fx-border-color: #d9b280; "
+                + "-fx-border-radius: 12; "
+                + "-fx-background-radius: 12; "
+        );
+        return db;
     }
 
     public static DialogBox getMeowDialog(String text, Image img) {
         var db = new DialogBox(text, img);
+        db.chatBubble.setStyle(
+                "-fx-background-color: #c7ebf0; "
+                + "-fx-border-color: #aacbd0; "
+                + "-fx-border-radius: 12; "
+                + "-fx-background-radius: 12; "
+        );
         db.flip();
         return db;
     }
