@@ -22,6 +22,7 @@ public class Main extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
+            stage.setTitle("⋆\uD83D\uDC3E° Meownager ≽^•⩊•^≼");
             stage.setScene(scene);
             stage.setResizable(true);
             fxmlLoader.<MainWindow>getController().setMeow(meownager);  // inject the Meownager instance
