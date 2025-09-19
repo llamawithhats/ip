@@ -266,7 +266,7 @@ public class Parser {
      *
      * @param input Input from the user.
      * @return Deadline task.
-     * @throws MeownagerException If description is empty or missing /by info.
+     * @throws MeownagerException If description is empty or missing /by info or wrong date format.
      */
     private Task getDeadline(String input) throws MeownagerException {
         if (input.strip().equals("deadline")) {
@@ -277,6 +277,9 @@ public class Parser {
         }
         String descr = input.split("deadline |/by")[1].trim();
         String date = input.split("/by |/tag")[1].trim();
+        if (!Deadline.isCorrectDateFormat(date)) {
+            throw MeownagerException.wrongDateFormat();
+        }
         if (hasTag(input)) {
             return new Deadline(descr, date, getTagMsg(input));
         }

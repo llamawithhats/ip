@@ -49,4 +49,9 @@ public class MeownagerException extends Exception {
     public static MeownagerException noMatchingTags() {
         return new MeownagerException("MEOW!! No matching tags found!");
     }
+
+    public static MeownagerException wrongDateFormat() {
+        return new MeownagerException("MEOW!! The date format is wrong! Use DD/MM/YYYY HHMM"
+                + "or DD/MM/YYYY instead, nya~");
+    }
 }

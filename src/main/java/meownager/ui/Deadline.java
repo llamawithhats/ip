@@ -26,15 +26,10 @@ public class Deadline extends Task {
      */
     public Deadline(String description, String date) {
         super(description);
-        // checking if input is in specific date format
-        Pattern patternWithTime = Pattern.compile("(\\d{1,2})/(\\d{1,2})/(\\d{4}) (\\d{4})");
-        Matcher mTime = patternWithTime.matcher(date);
-        Pattern patternNoTime = Pattern.compile("(\\d{1,2})/(\\d{1,2})/(\\d{4})");
-        Matcher mNoTime = patternNoTime.matcher(date);
-        if (mTime.matches() || mNoTime.matches()) { // if input date is in the specific format
-            this.date = parseAndFormatDate(date);
+        if (!isCorrectDateFormat(date)) { // from loaded storage file
+            this.date = date;
         } else {
-            this.date = date; // fallback to raw input (e.g. Monday 4pm)
+            this.date = parseAndFormatDate(date);
         }
     }
 
@@ -47,16 +42,20 @@ public class Deadline extends Task {
      */
     public Deadline(String description, String date, String tagMsg) {
         super(description, tagMsg);
+        if (!isCorrectDateFormat(date)) { // from loaded storage file
+            this.date = date;
+        } else {
+            this.date = parseAndFormatDate(date);
+        }
+    }
+
+    public static boolean isCorrectDateFormat(String date) {
         // checking if input is in specific date format
         Pattern patternWithTime = Pattern.compile("(\\d{1,2})/(\\d{1,2})/(\\d{4}) (\\d{4})");
         Matcher mTime = patternWithTime.matcher(date);
         Pattern patternNoTime = Pattern.compile("(\\d{1,2})/(\\d{1,2})/(\\d{4})");
         Matcher mNoTime = patternNoTime.matcher(date);
-        if (mTime.matches() || mNoTime.matches()) { // if input date is in the specific format
-            this.date = parseAndFormatDate(date);
-        } else {
-            this.date = date; // fallback to raw input (e.g. Monday 4pm)
-        }
+        return mTime.matches() || mNoTime.matches();
     }
 
     /**
