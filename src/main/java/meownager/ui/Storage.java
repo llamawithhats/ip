@@ -28,7 +28,6 @@ public class Storage {
     public void ensureFileExists() throws IOException {
         File f = new File(this.filePath);
         if (!f.exists()) {
-            // create directory if no exist
             File parent = f.getParentFile();
             if (parent != null && !parent.exists()) {
                 parent.mkdir();
