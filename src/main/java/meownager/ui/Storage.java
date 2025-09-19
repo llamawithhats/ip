@@ -77,6 +77,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Retrieves the tag from the parts of the file line.
+     *
+     * @param parts Array of different parts of each file lines.
+     * @return Tag message.
+     */
     private String retrieveTag(String[] parts) {
         return parts[parts.length - 1];
     }
