@@ -22,8 +22,8 @@ Not only that, it is **FREE!**
 
 ### Want it? I know you do. 
 All you have to do is:
-1. download it from [here](https://github.com/llamawithhats/ip.git)
-2. double click it
+1. download it from [here](https://github.com/llamawithhats/ip/releases/tag/A-Release)
+2. double click it (ensure you have Java 17 or above installed)
 3. add your tasks
 4. and let it meow-nage your tasks! 😸
 5. (optional) read this guide to explore all the features! (or simply input /help to see all commands)
