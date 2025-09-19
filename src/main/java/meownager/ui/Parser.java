@@ -159,12 +159,26 @@ public class Parser {
     }
 
     /**
+     * Checks if a string is a number.
+     *
+     * @param s String to be checked.
+     * @return True if string is a number, false otherwise.
+     */
+    public static boolean isNumber(String s) {
+        return s.matches("\\d+");
+    }
+
+    /**
      * Finds the task number from user input.
      *
      * @param input Input from user.
      * @return Task number.
      */
-    private int findTaskNumber(String input) {
+    private int findTaskNumber(String input) throws MeownagerException {
+        String wantedPart = input.split(" ")[1];
+        if (!isNumber(wantedPart)) {
+            throw MeownagerException.isNotInteger();
+        }
         return Integer.parseInt(input.split(" ")[1]);
     }
 
@@ -214,7 +228,7 @@ public class Parser {
      * @param input Input from user.
      * @param tasks TaskList containing list of tasks.
      * @return Message showing modified task.
-     * @throws MeownagerException If inputted task number is invalid.
+     * @throws MeownagerException If inputted task number is invalid or not a number.
      */
     private String handleModifyList(String input, TaskList tasks) throws MeownagerException {
         int num = findTaskNumber(input);

@@ -54,4 +54,9 @@ public class MeownagerException extends Exception {
         return new MeownagerException("MEOW!! The date format is wrong! Use DD/MM/YYYY HHMM"
                 + "or DD/MM/YYYY instead, nya~");
     }
+
+    public static MeownagerException isNotInteger() {
+        return new MeownagerException("MEOW!! I require the task number instead nya~\n"
+                + "(e.g. mark 2, unmark 1, delete 3 etc.)");
+    }
 }
