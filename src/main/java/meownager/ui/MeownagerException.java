@@ -41,4 +41,12 @@ public class MeownagerException extends Exception {
     public static MeownagerException emptyList() {
         return new MeownagerException("Mrowr! You have NO tasks. Add some neow, hooman!");
     }
+
+    public static MeownagerException noMatchingTasks() {
+        return new MeownagerException("MEOW!! No matching tasks found!");
+    }
+
+    public static MeownagerException noMatchingTags() {
+        return new MeownagerException("MEOW!! No matching tags found!");
+    }
 }

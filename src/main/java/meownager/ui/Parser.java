@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 /**
- * Deals with making sense of the user command
+ * Deals with making sense of the user command.
  *
  * @author Yu Tingan
  */
@@ -13,6 +13,12 @@ public class Parser {
 
     private Ui ui = new Ui();
 
+    /**
+     * Detects the type of task to be added.
+     *
+     * @param input Input from user.
+     * @return Type of task to be added.
+     */
     static TaskType detectType(String input) {
         if (input.startsWith("todo")) {
             return TaskType.TODO;
@@ -25,13 +31,26 @@ public class Parser {
         }
     }
 
+    /**
+     * Checks if user wants to exit the program.
+     *
+     * @param input Input from user.
+     * @return True if user wants to exit, false otherwise.
+     */
     boolean isByeCommand(String input) {
         return input.equals("bye");
     }
 
+    /**
+     * Checks if user wants to list all tasks.
+     *
+     * @param input Input from user.
+     * @return True if user wants to list all tasks, false otherwise.
+     */
     boolean isListCommand(String input) {
         return input.equals("list");
     }
+
 
     boolean isMarkCommand(String input) {
         return input.startsWith("mark ");
@@ -49,15 +68,33 @@ public class Parser {
         return input.startsWith("edittag");
     }
 
+    /**
+     * Checks if user wants to modify the task list (mark, unmark, delete, edit tag).
+     *
+     * @param input Input from user.
+     * @return True if user wants to modify the task list, false otherwise.
+     */
     boolean isModifyCommand(String input) {
         return isMarkOrUnmark(input) || isDeleteCommand(input)
                 || isEditTagCommand(input);
     }
 
+    /**
+     * Checks if user wants to find tasks.
+     *
+     * @param input Input from user.
+     * @return True if user wants to find tasks, false otherwise.
+     */
     boolean isFindCommand(String input) {
         return input.startsWith("find") || input.startsWith("findtag");
     }
 
+    /**
+     * Checks if user wants to see the command book.
+     *
+     * @param input Input from user.
+     * @return True if user wants to see the command book, false otherwise.
+     */
     boolean isHelpCommand(String input) {
         return input.trim().equals("/help");
     }
@@ -66,6 +103,9 @@ public class Parser {
      * Handles commands by the user ('list', 'mark', 'unmark', 'delete' and addList commands).
      *
      * @param input Input from the user.
+     * @param tasks TaskList containing list of tasks.
+     * @param storage Storage containing file path to store tasks.
+     * @return Response to be shown to user.
      */
     public String handleCommand(String input, TaskList tasks, Storage storage) {
         try {
@@ -89,6 +129,10 @@ public class Parser {
 
     /**
      * Exits the program and stores tasks into system file.
+     *
+     * @param tasks TaskList containing list of tasks.
+     * @param storage Storage containing file path to store tasks.
+     * @return Farewell message.
      */
     private String exit(TaskList tasks, Storage storage) {
         try {
@@ -102,6 +146,8 @@ public class Parser {
     /**
      * Handles 'list' command.
      *
+     * @param tasks TaskList containing list of tasks.
+     * @return Message showing list of tasks.
      * @throws MeownagerException If list is empty (no tasks).
      */
     private String handleList(TaskList tasks) throws MeownagerException {
@@ -112,14 +158,22 @@ public class Parser {
         }
     }
 
+    /**
+     * Finds the task number from user input.
+     *
+     * @param input Input from user.
+     * @return Task number.
+     */
     private int findTaskNumber(String input) {
         return Integer.parseInt(input.split(" ")[1]);
     }
 
     /**
-     * Handles 'mark', 'unmark' and 'delete' commands.
+     * Handles 'mark', 'unmark', 'delete', 'deltag' and 'edittag' commands.
      *
      * @param input Input from user.
+     * @param tasks TaskList containing list of tasks.
+     * @return Message showing modified task.
      * @throws MeownagerException If inputted task number is invalid.
      */
     private String handleModifyList(String input, TaskList tasks) throws MeownagerException {
@@ -156,6 +210,13 @@ public class Parser {
         return input.split("/tag")[1].trim();
     }
 
+    /**
+     * Creates a Todo task from user input.
+     *
+     * @param input Input from the user.
+     * @return Todo task.
+     * @throws MeownagerException If description is empty.
+     */
     private Task getTodo(String input) throws MeownagerException {
         if (input.strip().equals("todo")) {
             throw MeownagerException.emptyDescription("todo");
@@ -167,6 +228,13 @@ public class Parser {
         return new Todo(descr);
     }
 
+    /**
+     * Creates a Deadline task from user input.
+     *
+     * @param input Input from the user.
+     * @return Deadline task.
+     * @throws MeownagerException If description is empty or missing /by info.
+     */
     private Task getDeadline(String input) throws MeownagerException {
         if (input.strip().equals("deadline")) {
             throw MeownagerException.emptyDescription("deadline");
@@ -182,6 +250,13 @@ public class Parser {
         return new Deadline(descr, date);
     }
 
+    /**
+     * Creates an Event task from user input.
+     *
+     * @param input Input from the user.
+     * @return Event task.
+     * @throws MeownagerException If description is empty or missing /from or /to info.
+     */
     private Task getEvent(String input) throws MeownagerException {
         if (input.strip().equals("event")) {
             throw MeownagerException.emptyDescription("event");
@@ -202,6 +277,8 @@ public class Parser {
      * Handles commands that adds to task list.
      *
      * @param input Input from user.
+     * @param tasks TaskList containing list of tasks.
+     * @return Message showing task added.
      * @throws MeownagerException If invalid input.
      */
     private String handleAddList(String input, TaskList tasks) throws MeownagerException {
@@ -225,32 +302,67 @@ public class Parser {
         return ui.showTaskAdded(t, tasks.size());
     }
 
-    private String findTasksWithContent(String input, TaskList tasks) {
+    /**
+     * Handles 'find' commands.
+     *
+     * @param input Input from user.
+     * @param tasks TaskList containing list of tasks.
+     * @return Message showing filtered tasks.
+     * @throws MeownagerException If no matching tasks found.
+     */
+    private String findTasksWithContent(String input, TaskList tasks) throws MeownagerException {
         String filter = input.split("find")[1].trim();
         ArrayList<Task> filteredTasks = (ArrayList<Task>) tasks.getListOfTasks()
                 .stream()
                 .filter((t) -> t.getMessage().contains(filter))
                 .collect(Collectors.toList());
+        if (filteredTasks.isEmpty()) {
+            throw MeownagerException.noMatchingTasks();
+        }
         return ui.showFilteredTasks(filteredTasks);
     }
 
-    private String findTaskWithTag(String input, TaskList tasks) {
+    /**
+     * Handles 'findtag' commands.
+     *
+     * @param input Input from user.
+     * @param tasks TaskList containing list of tasks.
+     * @return Message showing filtered tasks with matching tags.
+     * @throws MeownagerException If no matching tags found.
+     */
+    private String findTaskWithTag(String input, TaskList tasks) throws MeownagerException {
         String filter = input.split("findtag")[1].trim();
         ArrayList<Task> filteredTasks = (ArrayList<Task>) tasks.getListOfTasks()
                 .stream()
                 .filter((t) -> t.hasTag())
                 .filter((t) -> t.getTagMsg().contains(filter))
                 .collect(Collectors.toList());
+        if (filteredTasks.isEmpty()) {
+            throw MeownagerException.noMatchingTags();
+        }
         return ui.showFilteredTasks(filteredTasks);
     }
 
-    private String handleFind(String input, TaskList tasks) {
+    /**
+     * Handles 'find' and 'findtag' commands.
+     *
+     * @param input Input from user.
+     * @param tasks TaskList containing list of tasks.
+     * @return Message showing filtered tasks.
+     * @throws MeownagerException If no matching tasks or tags found.
+     */
+    private String handleFind(String input, TaskList tasks) throws MeownagerException {
         if (input.startsWith("findtag")) {
             return findTaskWithTag(input, tasks);
         }
         return findTasksWithContent(input, tasks);
     }
 
+    /**
+     * Handles '/help' command.
+     *
+     * @return Command book message.
+     */
     private String handleHelp() {
         return ui.showCommandBook();
     }

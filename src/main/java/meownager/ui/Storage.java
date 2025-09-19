@@ -83,6 +83,12 @@ public class Storage {
         return parts[parts.length - 1];
     }
 
+    /**
+     * Returns corresponding Todo object based on string line in storage file.
+     *
+     * @param parts Array of different parts of each file lines.
+     * @return Task assigned.
+     */
     private Task assignTodo(String[] parts) {
         String desc = parts[2];
         if (hasTag(parts)) {
@@ -92,6 +98,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Returns corresponding Deadline object based on string line in storage file.
+     *
+     * @param parts Array of different parts of each file lines.
+     * @return Task assigned.
+     */
     private Task assignDead(String[] parts) {
         String desc = parts[2];
         String date = parts[3];
@@ -102,6 +114,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Returns corresponding Event object based on string line in storage file.
+     *
+     * @param parts Array of different parts of each file lines.
+     * @return Task assigned.
+     */
     private Task assignEvent(String[] parts) {
         String desc = parts[2];
         String from = parts[3];
@@ -112,8 +130,6 @@ public class Storage {
             return new Event(desc, from, to);
         }
     }
-
-
 
     /**
      * Returns corresponding type of Task object based on

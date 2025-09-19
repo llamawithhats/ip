@@ -18,6 +18,12 @@ import java.util.regex.Pattern;
 public class Deadline extends Task {
     protected String date;
 
+    /**
+     * Constructs a Deadline object with no tag.
+     *
+     * @param description Task description.
+     * @param date Task due date.
+     */
     public Deadline(String description, String date) {
         super(description);
         // checking if input is in specific date format
@@ -32,6 +38,13 @@ public class Deadline extends Task {
         }
     }
 
+    /**
+     * Constructs a Deadline object with a tag.
+     *
+     * @param description Task description.
+     * @param date Task due date.
+     * @param tagMsg Tag assigned to the task.
+     */
     public Deadline(String description, String date, String tagMsg) {
         super(description, tagMsg);
         // checking if input is in specific date format
@@ -76,6 +89,12 @@ public class Deadline extends Task {
         return null; // won't happen
     }
 
+    /**
+     * Returns the basic content of the task in the specific format required
+     * to be stored in the file (i.e. x | x | x ...).
+     *
+     * @return Basic Task Content.
+     */
     String giveBasicFileCont() {
         return "D" + " | " + this.getStatusNumber() + " | " + this.description
                 + " | " + this.date;

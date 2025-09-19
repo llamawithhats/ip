@@ -53,6 +53,14 @@ public class Task {
         return this.tag != null;
     }
 
+    /**
+     * Marks the task as done.
+     * If the task is already marked, a MeownagerException is thrown.
+     *
+     * @param t Task.
+     * @return Mark message.
+     * @throws MeownagerException If task is already marked.
+     */
     private String mark(Task t) throws MeownagerException {
         if (t.isDone) {
             throw MeownagerException.alreadyCompleted();
@@ -62,6 +70,14 @@ public class Task {
         }
     }
 
+    /**
+     * Unmarks the task as not done.
+     * If the task is already unmarked, a MeownagerException is thrown.
+     *
+     * @param t Task.
+     * @return Unmark message.
+     * @throws MeownagerException If task is already unmarked.
+     */
     private String unmark(Task t) throws MeownagerException {
         if (!t.isDone) {
             throw MeownagerException.stillUncompleted();
@@ -78,6 +94,7 @@ public class Task {
      *
      * @param t Task.
      * @param input Input from user.
+     * @return Mark or unmark message.
      */
     public String markMessage(Task t, String input) {
         boolean isMark = input.startsWith("mark ");
@@ -112,6 +129,12 @@ public class Task {
         this.tag = null;
     }
 
+    /**
+     * Edits the tag belonging to the task.
+     * If no tag exists, a new tag is created.
+     *
+     * @param newTagMsg New tag message.
+     */
     public void editTag(String newTagMsg) {
         if (this.tag == null) {
             this.tag = new Tag(newTagMsg);
@@ -120,6 +143,11 @@ public class Task {
         }
     }
 
+    /**
+     * Returns the message of the tag belonging to the task.
+     *
+     * @return Tag Message.
+     */
     public String getTagMsg() {
         return this.tag.showTagMsg();
     }

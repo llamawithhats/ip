@@ -16,6 +16,12 @@ public class Todo extends Task {
         super(description, tagMsg);
     }
 
+    /**
+     * Returns the basic content of the task in the specific format required
+     * to be stored in the file (i.e. x | x | x ...).
+     *
+     * @return Basic Task Content.
+     */
     String giveBasicFileCont() {
         return "T" + " | " + this.getStatusNumber() + " | " + this.description;
     }

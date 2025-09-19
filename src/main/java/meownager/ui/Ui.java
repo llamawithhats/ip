@@ -9,6 +9,11 @@ import java.util.ArrayList;
  */
 public class Ui {
 
+    /**
+     * Greets the user.
+     *
+     * @return Greeting message.
+     */
     public String showGreetings() {
         String logo = "  ( =＾･ω･＾=)ノ <3\n";
         return "Hello! I'm your resident MEOWnager!\n" + logo
@@ -24,6 +29,12 @@ public class Ui {
         return errorMsg;
     }
 
+    /**
+     * Displays the list of tasks.
+     *
+     * @param listOfTasks List of tasks to be displayed.
+     * @return Formatted string of tasks.
+     */
     public String showTaskList(ArrayList<Task> listOfTasks) {
         String s = "\uD83D\uDE3A Here are your tasks, hooman:";
         for (int i = 0; i < listOfTasks.size(); i++) {
@@ -32,16 +43,35 @@ public class Ui {
         return s;
     }
 
+    /**
+     * Displays a message when a task is marked as completed.
+     *
+     * @param t The task that was marked.
+     * @return Formatted string indicating the task was marked.
+     */
     public String showMarkedMessage(Task t) {
         return "Meow! Good job completing this task:"
                 + "\n\t" + t.getMessage();
     }
 
+    /**
+     * Displays a message when a task is unmarked as completed.
+     *
+     * @param t The task that was unmarked.
+     * @return Formatted string indicating the task was unmarked.
+     */
     public String showUnmarkedMessage(Task t) {
         return "Meow! I've unmarked this task for you:"
                 + "\n\t" + t.getMessage();
     }
 
+    /**
+     * Displays a message when a task is deleted.
+     *
+     * @param t The task that was deleted.
+     * @param totalTasks The total number of tasks remaining.
+     * @return Formatted string indicating the task was deleted and the total tasks left.
+     */
     public String showDeletedMessage(Task t, int totalTasks) {
         return "Purr-fect! I’ve scratched that task off your list~ \uD83D\uDC3E"
                 + "\n\t" + t.getMessage()
@@ -52,12 +82,24 @@ public class Ui {
         return "This is your edited task: ";
     }
 
+    /**
+     * Displays a message when a tag is deleted from a task.
+     *
+     * @param t The task from which the tag was deleted.
+     * @return Formatted string indicating the tag was deleted and showing the edited task.
+     */
     public String showDeletedTag(Task t) {
         return "Hehe, I've clawed away that tag~ \uD83D\uDC3E \n"
                 + showEditedTask()
                 + "\n\t" + t.getMessage();
     }
 
+    /**
+     * Displays a message when a tag is edited or added to a task.
+     *
+     * @param t The task to which the tag was added or edited.
+     * @return Formatted string indicating the tag was edited/added and showing the edited task.
+     */
     public String showEditedTag(Task t) {
         return "Meow! I've edited your tag message~ \n"
                 + showEditedTask()
@@ -70,6 +112,12 @@ public class Ui {
                 + "\nYou neow have " + total + " tasks in your list.";
     }
 
+    /**
+     * Displays a list of tasks that match a certain filter.
+     *
+     * @param listOfTasks List of tasks that match the filter.
+     * @return Formatted string of matching tasks.
+     */
     public String showFilteredTasks(ArrayList<Task> listOfTasks) {
         String s = "Paws up! I’ve sniffed out these matching tasks:";
         for (int i = 0; i < listOfTasks.size(); i++) {
@@ -111,6 +159,11 @@ public class Ui {
         return "____________________________________\n";
     }
 
+    /**
+     * Displays the command book to assist users with available commands.
+     *
+     * @return Formatted string of the command book.
+     */
     public String showCommandBook() {
         String s = "Lost in the litter of commands? Here’s your paw-some guide! \uD83D\uDC31 \n\n";
         s += addTasks() + divider();

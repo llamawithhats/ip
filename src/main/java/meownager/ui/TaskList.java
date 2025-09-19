@@ -27,26 +27,57 @@ public class TaskList {
         this.listOfTasks = new ArrayList<>();
     }
 
+    /**
+     * Returns the list of tasks.
+     *
+     * @return List of tasks.
+     */
     public ArrayList<Task> getListOfTasks() {
         return listOfTasks;
     }
 
+    /**
+     * Returns the task at the given index.
+     *
+     * @param index Index of the task.
+     * @return Task at the given index.
+     */
     public Task get(int index) {
         return listOfTasks.get(index);
     }
 
+    /**
+     * Adds the given task to the list.
+     *
+     * @param t Task to be added.
+     */
     public void add(Task t) {
         listOfTasks.add(t);
     }
 
+    /**
+     * Removes the given task from the list.
+     *
+     * @param t Task to be removed.
+     */
     public void remove(Task t) {
         listOfTasks.remove(t);
     }
 
+    /**
+     * Returns the size of the list.
+     *
+     * @return Size of the list.
+     */
     public int size() {
         return listOfTasks.size();
     }
 
+    /**
+     * Returns true if the list is empty.
+     *
+     * @return True if the list is empty.
+     */
     public boolean isEmpty() {
         return listOfTasks.isEmpty();
     }
