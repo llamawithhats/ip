@@ -53,13 +53,11 @@ public class Event extends Task {
     @Override
     public String toFileString() {
         String fileContent;
-
         if (this.tag == null) {
             fileContent = giveBasicFileCont() + "\n";
         } else {
             fileContent = giveBasicFileCont() + " | " + this.tag.showTagMsg() + "\n";
         }
-
         return fileContent;
     }
 

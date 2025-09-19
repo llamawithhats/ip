@@ -169,7 +169,47 @@ public class Parser {
     }
 
     /**
-     * Handles 'mark', 'unmark', 'delete', 'deltag' and 'edittag' commands.
+     * Deletes a task from the task list.
+     *
+     * @param t Task to be deleted.
+     * @param tasks TaskList containing list of tasks.
+     * @return Message showing deleted task.
+     */
+    private String deleteTask(Task t, TaskList tasks) {
+        tasks.remove(t);
+        return ui.showDeletedMessage(t, tasks.size());
+    }
+
+    /**
+     * Deletes the tag from a task.
+     *
+     * @param t Task whose tag is to be deleted.
+     * @return Message showing deleted tag.
+     */
+    private String deleteTag(Task t) {
+        t.deleteTag();
+        return ui.showDeletedTag(t);
+    }
+
+    /**
+     * Edits the tag of a task.
+     *
+     * @param input Input from user.
+     * @param t Task whose tag is to be edited.
+     * @return Message showing edited tag.
+     */
+    private String editTag(String input, Task t) {
+        String[] parts = input.split(" ");
+        if (parts.length != 3) {
+            return ui.showError("Missing new tag msg!");
+        }
+        String newTagMsg = parts[2];
+        t.editTag(newTagMsg);
+        return ui.showEditedTag(t);
+    }
+
+    /**
+     * Handles modify list commands.
      *
      * @param input Input from user.
      * @param tasks TaskList containing list of tasks.
@@ -183,24 +223,17 @@ public class Parser {
         }
         Task t = tasks.get(num - 1);
         if (input.startsWith("delete")) {
-            tasks.remove(t);
-            return ui.showDeletedMessage(t, tasks.size());
+            return deleteTask(t, tasks);
         } else if (input.startsWith("deltag")) {
-            t.deleteTag();
-            return ui.showDeletedTag(t);
+            return deleteTag(t);
         } else if (isEditTagCommand(input)) {
-            String[] parts = input.split(" ");
-            if (parts.length != 3) {
-                return ui.showError("Missing new tag msg!");
-            }
-            String newTagMsg = parts[2];
-            t.editTag(newTagMsg);
-            return ui.showEditedTag(t);
+            return editTag(input, t);
         } else {
             assert isMarkOrUnmark(input) : "Should be mark/unmark command";
             return t.markMessage(t, input);
         }
     }
+
 
     private boolean hasTag(String input) {
         return input.contains("/tag");

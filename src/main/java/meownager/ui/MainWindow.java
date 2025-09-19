@@ -46,7 +46,11 @@ public class MainWindow extends AnchorPane {
         });
     }
 
-    /** Injects the Meow instance */
+    /**
+     * Injects the Meow instance
+     *
+     * @param m Meownager instance
+     */
     public void setMeow(Meownager m) {
         meownager = m;
         String greetings = ui.showGreetings();
