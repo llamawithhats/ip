@@ -32,7 +32,6 @@ public class Storage {
             if (parent != null && !parent.exists()) {
                 parent.mkdir();
             }
-            // create file if no exist
             f.createNewFile();
             System.out.println("New file created at: " + filePath);
         }
