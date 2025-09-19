@@ -60,6 +60,36 @@ public class Deadline extends Task {
     }
 
     /**
+     * Returns formatted date when user inputs date in the specific
+     * format with time (i.e. d/M/yyyy HHmm).
+     * e.g. 12/6/2025 0600 will become Jun 12 2025, 06:00pm
+     *
+     * @param date Date from input.
+     * @return Formatted date.
+     */
+    private String getDateWithTime(String date) {
+        DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
+        LocalDateTime dateTime = LocalDateTime.parse(date, inputFormat);
+        DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM d yyyy, h:mma");
+        return dateTime.format(outputFormat);
+    }
+
+    /**
+     * Returns formatted date when user inputs date in the specific
+     * format with no time (i.e. d/M/yyyy).
+     * e.g. 12/6/2025 will become Jun 12 2025
+     *
+     * @param date Date from input.
+     * @return Formatted date.
+     */
+    private String getDateNoTime(String date) {
+        DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("d/M/yyyy");
+        LocalDate dateOnly = LocalDate.parse(date, inputFormat);
+        DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM d yyyy");
+        return dateOnly.format(outputFormat);
+    }
+
+    /**
      * Returns formatted date when user inputs date in a specific
      * format (i.e. d/M/yyyy HHmm or d/M/yyyy).
      * e.g. 12/6/2025 0600 will become Jun 12 2025, 06:00pm
@@ -68,23 +98,13 @@ public class Deadline extends Task {
      * @return Formatted date.
      */
     public String parseAndFormatDate(String date) {
-        // with time
         try {
-            DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
-            LocalDateTime dateTime = LocalDateTime.parse(date, inputFormat);
-            DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM d yyyy, h:mma");
-            return dateTime.format(outputFormat);
-        } catch (DateTimeParseException e) {
-            // fall through to next try
+            return getDateWithTime(date);
+        } catch (DateTimeParseException ignored) {
         }
-        // with no time
         try {
-            DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("d/M/yyyy");
-            LocalDate dateOnly = LocalDate.parse(date, inputFormat);
-            DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM d yyyy");
-            return dateOnly.format(outputFormat);
-        } catch (DateTimeParseException e) {
-
+            return getDateNoTime(date);
+        } catch (DateTimeParseException ignored) {
         }
         return null; // won't happen
     }

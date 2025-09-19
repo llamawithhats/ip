@@ -13,7 +13,7 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
-    private static final String FILE_PATH = "./data/Meownager.txt";
+    private static final String FILE_PATH = System.getProperty("user.home") + "/Meownager/Meownager.txt";
     private Meownager meownager = new Meownager(FILE_PATH);
 
     @Override
